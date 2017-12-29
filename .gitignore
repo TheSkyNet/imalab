@@ -2,7 +2,6 @@
 .idea
 /node_modules
 /assets/components
-.phalcon
 composer.lock
 /public/css
 /public/files
