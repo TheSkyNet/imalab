@@ -8,3 +8,4 @@ composer.lock
 /public/img
 /public/js
 /public/temp
+/.phalcon/*
