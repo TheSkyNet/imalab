@@ -1,0 +1,11 @@
+system:
+  config:
+    enviroment: dev
+    port: 8080
+    dateabace:
+      adapter:
+      host:
+      username:
+      password:
+      dbname:
+
