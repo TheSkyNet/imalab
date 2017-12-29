@@ -8,7 +8,7 @@ var connect = require('gulp-connect-php');
 var plugins = gulpLoadPlugins();
 
 var yml = loadConfig();
-var yamlConf = './config/defaults-js.yml';
+var yamlConf = './config/defaults-brand.yml';
 
 gulp.task(
   'yaml-parser', function ()
@@ -21,7 +21,7 @@ gulp.task(
 
 function loadConfig()
 {
-  var ymlFile = fs.readFileSync( './config/defaults-js.yml', 'utf8');
+  var ymlFile = fs.readFileSync( './config/defaults-brand.yml', 'utf8');
   return yaml.load(ymlFile);
 }
 
@@ -154,8 +154,8 @@ gulp.task(
 gulp.task(
   'copy', function ()
   {
-    return gulp.src('src/pages/**/*')
-      .pipe(gulp.dest('./dist'));
+    return gulp.src(yml.brend.files.src)
+      .pipe(gulp.dest(yml.brend.files.dist));
   }
 );
 
@@ -166,7 +166,7 @@ gulp.task(
   'images', function ()
   {
     return gulp.src(yml.brend.img.src)
-      .pipe(plugins.imagemin())
+     /* .pipe(plugins.imagemin())*/
       .pipe(gulp.dest(yml.brend.img.dist));
   }
 );

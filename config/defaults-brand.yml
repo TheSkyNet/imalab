@@ -26,9 +26,11 @@ brend:
     dist: './public/css/'
     output: 'style.css'
   img:
-    src:
-     - './assets/img/**/*.{png|jpg|gif|svg}'
+    src: './assets/img/**/*'
     dist: './public/img/'
+  files:
+    src: './assets/files/**/*'
+    dist: './public/files/'
   watch:
     scss:
       - './assets/scss/**/*.scss'
