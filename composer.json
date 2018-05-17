@@ -11,7 +11,7 @@
   ],
   "require": {
     "cboden/ratchet": "^0.3.5",
-    "phalcon/devtools": "^3.0",
+    "phalcon/devtools": "^3.2",
     "marc-mabe/php-enum": "^2.2",
     "symfony/var-dumper": "^3.1",
     "symfony/finder": "^3.1",

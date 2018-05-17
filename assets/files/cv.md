@@ -1,93 +1,118 @@
-Johnny Coder
+KEVIN MORTON
 ============
-
--------------------     ----------------------------
-1 MyAddress                        email@example.com
-MyTown 1000                          @twitter_handle
-MyCountry                           1800 my-phone-nr
--------------------     ----------------------------
+    
+92 Edward St,                    
+Burton-on-Trent                 
+DE14 2JE          
+            
+-------------------            
+    Email: kev@kevs.biz
+    Portfolio: iamlab.tech
+    Phone: 07428207091
 
 Education
 ---------
-
-2010-2014 (expected)
-:   **PhD, Computer Science**; Awesome University (MyTown)
-
-    *Thesis title: Deep Learning Approaches to the Self-Awesomeness
-     Estimation Problem*
-
-2007-2010
-:   **BSc, Computer Science and Electrical Engineering**; University of
-    HomeTown (HomeTown)
-
-    *Minor: Awesomeology*
+  **HND, Computer Science**; Staffordshire University (Stafford)
+  
+     *Thesis title: The Introduction of Technology for Improved Student Planning.
 
 Experience
 ----------
+**JDI  (Southampton):**
 
-**Your Most Recent Work Experience:**
+Working for one of the world's largest web hosting companies EIG I was one of the key developers and often the main points of call for the website builder brad of products. I worked on all parts of the system including;
 
-Short text containing the type of work done, results obtained,
-lessons learned and other remarks. Can also include lists and
-links:
+* Support and management systems
+* Performance and web scalability testing
+* Management of multiple brand flows including [websitebuilder.com](https://www.websitebuilder.com/) and [sitelio.com](https://www.sitelio.com/).
 
-* First item
+**Contract and Freelance Work**
 
-* Item with [link](http://www.example.com). Links will work both in
-  the html and pdf versions.
+With over 10 years of experience in developing bespoke solutions for a very wide range of different business domains, I have helped many organizations of various sizes either get online, enter new, or existing domains.
 
-**That Other Job You Had**
+**Web:**
 
-Also with a short description.
+From Wordpress to Drupal to custom solutions, web has been the main focus of my career thus far, many examples can be found in my portfolio on iamlab.tech
+
+**Magento:**
+
+I have worked on many, Magento stores for both 1.x and 2.x versions of the platform including custom modules and improvements to the platform.  magento site I have worked on include [**jessieandjames.co.uk**](http://iamlab.tech/#!/project/13) ,   [**indigofurniture.co.uk**](/http://iamlab.tech/#!/project/14), and [**saharalondon.com**](http://iamlab.tech/#!/project/15)
+
+
+**Mobile:**
+
+Using both native java or swift and react-native I developed solutions for many clients, including iOrder for the ePOS giant zonal. 
+
+**Business Solutions:**
+
+Managed infrastructure software solutions encompassing front office and back office functions. utilizing a discovery process which is information gathering with the prospect to understand the clients business issues and using this knowledge to develop a bespoke  solution to resolve internal issues, such as ;
+ 
+ * Timetables using bus network data.
+ * Payment processing and customer invoicing **[puddingpay.online]**.
+ * ERP and CRM integrations such as Acumatica Sage and Open CRM.
+ * Blockchain based solutions for contract signature fraud prevention.  
 
 Technical Experience
 --------------------
 
-My Cool Side Project
-:   For items which don't have a clear time ordering, a definition
-    list can be used to have named items.
+**Open Source:**
 
-    * These items can also contain lists, but you need to mind the
-      indentation levels in the markdown source.
-    * Second item.
+As a developer its common for me to publish some of my work Open Source, this can include node modules on NPM or composer modules on Packagist or many of my Magento and WordPress extensions, please refer to my [iamlab.tech] portfolio for links.  
 
-Open Source
-:   List open source contributions here, perhaps placing emphasis on
-    the project names, for example the **Linux Kernel**, where you
-    implemented multithreading over a long weekend, or **node.js**
-    (with [link](http://nodejs.org)) which was actually totally
-    your idea...
+**Programming Languages:**
 
-Programming Languages
-:   **first-lang:** Here, we have an itemization, where we only want
-    to add descriptions to the first few items, but still want to
-    mention some others together at the end. A format that works well
-    here is a description list where the first few items have their
-    first word emphasized, and the last item contains the final few
-    emphasized terms. Notice the reasonably nice page break in the pdf
-    version, which wouldn't happen if we generated the pdf via html.
+**PHP:** 10 + years, including supporting many technologies and frameworks;
+   * Laravel 
+   * SQL
+   * Phalcon
+   * Symfony
+    
+**Javascript:** 5 + years using javascript for node apps and 10 + years javascript frameworks for frontend ;
+   * Anguler
+   * mythril
+   * React-native
+   * Gulp
+    
+**JAVA:** 10 + years, for me Java is now more common in various business solutions than a day to day;
+   * Spring MVC
+   * Android
+    
+More knowledge of **C++**, **C#**, **Go Lang**, **RUST**, **Swift**, **CFML**,
 
-:   **second-lang:** Description of your experience with second-lang,
-    perhaps again including a [link] [ref], this time placing the url
-    reference elsewhere in the document to reduce clutter (see source
-    file). 
+Work History
+--------------------
 
-:   **obscure-but-impressive-lang:** We both know this one's pushing
-    it.
+**Freelance and Remote Contracts:** 2017 -2017
+Tgr Ventures: tgrventures.com
+Pudding pay: puding pay-online.online 
+Payday reclaim: paydayreclaim.co.uk
 
-:   Basic knowledge of **C**, **x86 assembly**, **forth**, **Common Lisp**
+    PHP, Mongo, Magento 2, Various Other, Wordpress, Laravel 
+ 
+**JUST DEVELOP iT -FT:** 2016 - 2017
+Address: 16-18 Barnes Wallis Rd, Fareham PO15 5TT 
 
-[ref]: https://github.com/githubuser/superlongprojectname
+    PHP , GO , Phalcon , Zeffer
+    
+**TXD - C:** 2016 - 2016
+Address: Unit 1 Cheshire House, Hurricane Close, Stafford ST16 1GZ 
 
-Extra Section, Call it Whatever You Want
-----------------------------------------
+    Laravel, NodeJs , Websockets , React-Native  
 
-* Human Languages:
+**Juno -C**  2015 - 2015
+Web Designer
+Address: 4-6 Broadway, Nottingham NG1 1PS 
 
-     * English (native speaker)
-     * ???
-     * This is what a nested list looks like.
+    Magento, PHP , Devops, MYSQL 
 
-* Random tidbit
+**Melodi media:** 2014 - 2015
+Melodi Ltd Telecommunication Services
+Address: Straddan House, Queen Street, Lichfield WS13 6QD 
 
-* Other sort of impressive-sounding thing you did
+    Full stack developer, PHP JAVA , Javascript, Mobile Seveloper, IOS , WP7, android   
+
+Short term Contract and Freelance work:  2008 - 2014
+    Full stack developer, PHP JAVA , Javascript 
+
+
+

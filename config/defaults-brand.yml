@@ -9,6 +9,7 @@ brend:
       - './assets/components/jquery/dist/jquery.js'
       - './assets/components/imagesloaded/imagesloaded.pkgd.js'
       - './assets/components/masonry/dist/masonry.pkgd.js'
+      - './assets/components/vibrant/dist/Vibrant.js'
       - './assets/components/markdown/lib/markdown.js'
       - './assets/js/Project/ProjectModule.js'
       - './assets/js/Post/PostsModule.js'

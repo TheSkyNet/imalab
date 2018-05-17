@@ -8,12 +8,14 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 define('APP_PATH', realpath('../IamLab'));
+
 if (!file_exists(__DIR__ . '/' . $_SERVER['REQUEST_URI'])) {
   $_GET['_url'] = $_SERVER['REQUEST_URI'];
 }
 $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
+
 try {
 
     $di = new FactoryDefault();

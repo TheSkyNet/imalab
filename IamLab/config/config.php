@@ -7,7 +7,7 @@ return new \Phalcon\Config([
         'adapter'    => 'Mysql',
         'host'       => 'localhost',
         'username'   => 'root',
-        'password'   => '',
+        'password'   => 'JP)(2407d',
         'dbname'     => 'iamlab',
     ],
 

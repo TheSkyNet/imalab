@@ -6,8 +6,7 @@ m.route(root, "/", {
   "/projects": ProjectList,
   "/project/:id": ProjectOne,
   "/packages": PackageList,
-  "/packages/:id": PackageList,
   "/posts": PostList,
   "/posts/:id": ProjectList,
-  "/about": About
+  "/about": AboutModule
 });

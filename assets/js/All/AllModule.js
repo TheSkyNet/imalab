@@ -56,7 +56,7 @@ var AllList = {
 
       // bind event
       $grid.masonry('on', 'layoutComplete', function () {
-        console.log('layout is complete');
+       /* console.log('layout is complete');*/
       });
     });
   }
@@ -86,7 +86,7 @@ function projectView(project) {
             'img', {class: "img-fluid", src: project.img}
           )
         ),
-        m('.grid-item-title', project.title),
+       /* m('.grid-item-title', project.title),*/
        m('.grid-item-slug .slug-'+ project.type.trim(), project.type.trim())
       ]
     )

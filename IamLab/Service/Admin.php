@@ -13,7 +13,7 @@ class Admin extends Component
 
   function indexAction()
   {
-    $this->isAuthenticated;
+    //$this->isAuthenticated;
 
     echo $this->view->render('admin');
 
