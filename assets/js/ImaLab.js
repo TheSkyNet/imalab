@@ -4,6 +4,12 @@ var colors = [
   [125,154,214],
   [134,150,176],
 ];
+try {
+  window.Popper = require('popper.js').default;
+  window.$ = window.jQuery = require('jquery');
+
+  require('bootstrap');
+} catch (e) {}
 
 var step = 0;
 //color table indices for:

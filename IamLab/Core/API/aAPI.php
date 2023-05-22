@@ -2,9 +2,7 @@
 
 namespace IamLab\Core\API;
 
-use Phalcon\Mvc\User\Component;
-
-abstract class aAPI extends Component
+abstract class aAPI extends \Phalcon\Di\Injectable
 {
   protected function dispatch($data)
   {

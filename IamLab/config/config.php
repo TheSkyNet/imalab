@@ -2,7 +2,7 @@
 
 defined('APP_PATH') || define('APP_PATH', realpath('./IamLab'));
 
-return new \Phalcon\Config([
+return new \Phalcon\Config\Config([
     'database' => [
         'adapter'    => 'Mysql',
         'host'       => 'localhost',

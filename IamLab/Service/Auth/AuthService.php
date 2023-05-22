@@ -8,10 +8,11 @@
  */
 namespace IamLab\Service\Auth;
 
+use IamLab\Core\API\aAPI;
 use IamLab\Model\User;
 use Phalcon\Mvc\User\Component;
 
-class AuthService extends Component
+class AuthService extends aAPI
 {
   public $isAuthenticated;
   public $state;

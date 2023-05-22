@@ -2,6 +2,7 @@
   "name": "iam-lab/iam-lab",
   "description": "the project showcace for kevins iam lab",
   "type": "project",
+  "minimum-stability": "dev",
   "license": "mit",
   "authors": [
     {
@@ -10,8 +11,6 @@
     }
   ],
   "require": {
-    "cboden/ratchet": "^0.3.5",
-    "phalcon/devtools": "^3.2",
     "marc-mabe/php-enum": "^2.2",
     "symfony/var-dumper": "^3.1",
     "symfony/finder": "^3.1",
@@ -21,5 +20,19 @@
     "psr-4": {
       "IamLab\\": "IamLab/"
     }
-  }
+  },
+  "require-dev": {
+    "phalcon/devtools": "5.0.x",
+    "phalcon/migrations": "3.0.x"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/twistersfury/phalcon-migrations.git"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/escribiendocodigo/phalcon-devtools.git"
+    }
+  ]
 }

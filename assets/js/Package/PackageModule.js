@@ -51,3 +51,4 @@ var PackageList = {
     });
   },
 };
+module.exports = {PackageList, Package}

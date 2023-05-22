@@ -4,7 +4,6 @@ namespace IamLab\Service;
 
 use IamLab\Model\User;
 use IamLab\Service\Auth\AuthService;
-use Phalcon\Mvc\User\Component;
 
 class Auth extends Component
 {

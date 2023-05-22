@@ -1,9 +1,10 @@
-<?php 
+<?php
 
 use Phalcon\Db\Column;
+use Phalcon\Db\Exception;
 use Phalcon\Db\Index;
 use Phalcon\Db\Reference;
-use Phalcon\Mvc\Model\Migration;
+use Phalcon\Migrations\Mvc\Model\Migration;
 
 /**
  * Class UserMigration_100
@@ -14,55 +15,62 @@ class UserMigration_100 extends Migration
      * Define the table structure
      *
      * @return void
+     * @throws Exception
      */
-    public function morph()
+    public function morph(): void
     {
         $this->morphTable('user', [
-                'columns' => [
-                    new Column(
-                        'id',
-                        [
-                            'type' => Column::TYPE_INTEGER,
-                            'notNull' => true,
-                            'autoIncrement' => true,
-                            'first' => true
-                        ]
-                    ),
-                    new Column(
-                        'name',
-                        [
-                            'type' => Column::TYPE_VARCHAR,
-                            'notNull' => true,
-                            'size' => 50,
-                            'after' => 'id'
-                        ]
-                    ),
-                    new Column(
-                        'email',
-                        [
-                            'type' => Column::TYPE_VARCHAR,
-                            'notNull' => true,
-                            'size' => 50,
-                            'after' => 'name'
-                        ]
-                    ),
-                    new Column(
-                        'password',
-                        [
-                            'type' => Column::TYPE_VARCHAR,
-                            'notNull' => true,
-                            'size' => 255,
-                            'after' => 'email'
-                        ]
-                    )
-                ],
-                'indexes' => [
-                    new Index('user_email_uindex', ['email'], null),
-                    new Index('user_id_uindex', ['id'], null),
-                    new Index('user_pkey', ['id'], null)
-                ],
-            ]
-        );
+            'columns' => [
+                new Column(
+                    'id',
+                    [
+                        'type' => Column::TYPE_INTEGER,
+                        'notNull' => true,
+                        'autoIncrement' => true,
+                        'size' => 1,
+                        'first' => true
+                    ]
+                ),
+                new Column(
+                    'name',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => true,
+                        'size' => 50,
+                        'after' => 'id'
+                    ]
+                ),
+                new Column(
+                    'email',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => true,
+                        'size' => 50,
+                        'after' => 'name'
+                    ]
+                ),
+                new Column(
+                    'password',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => true,
+                        'size' => 255,
+                        'after' => 'email'
+                    ]
+                ),
+            ],
+            'indexes' => [
+                new Index('user_email_uindex', ['email'], ''),
+                new Index('user_id_uindex', ['id'], ''),
+                new Index('user_pkey', ['id'], ''),
+            ],
+            'options' => [
+                'TABLE_TYPE' => 'BASE TABLE',
+                'AUTO_INCREMENT' => '',
+                'ENGINE' => 'InnoDB',
+                'TABLE_COLLATION' => 'utf8mb4_0900_ai_ci',
+            ],
+        ]);
     }
 
     /**
@@ -70,9 +78,8 @@ class UserMigration_100 extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-
     }
 
     /**
@@ -80,9 +87,7 @@ class UserMigration_100 extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
-
     }
-
 }

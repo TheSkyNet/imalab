@@ -2,18 +2,19 @@
 
 namespace IamLab\Service;
 
-use Phalcon\Mvc\User\Component;
+
+use IamLab\Core\API\aAPI;
 
 /**
  * @property void isAuthenticated
  */
-class Admin extends Component
+class Admin extends aAPI
 {
 
 
   function indexAction()
   {
-    //$this->isAuthenticated;
+  //  $this->isAuthenticated;
 
     echo $this->view->render('admin');
 

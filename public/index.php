@@ -1,6 +1,14 @@
 <?php
+
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Mvc\Micro;
+use IamLab\Service\Auth\AuthService;
+use Phalcon\Http\Response;
+use Phalcon\Mvc\View\Simple;
+use Phalcon\Mvc\Url as UrlResolver;
+use Phalcon\Cache\Frontend\Data as FrontendData;
+use Phalcon\Cache\Backend\Memcache as BackendMemcache;
+
 
 include "../vendor/autoload.php";
 ini_set('display_errors', 1);
@@ -10,13 +18,13 @@ error_reporting(E_ALL);
 define('APP_PATH', realpath('../IamLab'));
 
 if (!file_exists(__DIR__ . '/' . $_SERVER['REQUEST_URI'])) {
-  $_GET['_url'] = $_SERVER['REQUEST_URI'];
+    $_GET['_url'] = $_SERVER['REQUEST_URI'];
 }
 $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
 
-try {
+
 
     $di = new FactoryDefault();
 
@@ -44,9 +52,5 @@ try {
     /**
      * Handle the request
      */
-    $app->handle();
+    $app->handle($_SERVER["REQUEST_URI"]);
 
-} catch (\Exception $e) {
-      echo $e->getMessage() . '<br>';
-      echo '<pre>' . $e->getTraceAsString() . '</pre>';
-}
