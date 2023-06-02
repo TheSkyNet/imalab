@@ -17,16 +17,8 @@ class API extends aAPI
         $posts = Post::find();
         $packages = Package::find();
         $project = Project::find();
-        $all = [];
 
-
-        $all = array_merge(
-            $all,
-            $posts->toArray(),
-            $packages->toArray(),
-            $project->toArray());
-        shuffle($all);
-        $this->dispatch($all);
+        $this->dispatch([$posts, $packages, $project]);
     }
 
     public function getPostsAction()
@@ -36,21 +28,42 @@ class API extends aAPI
     }
 
 
-    public function getPostsByIdAction($id)
+    public function getPostsByIdAction(int $id)
     {
         $posts = Post::findFirstById($id);
         $this->dispatch($posts);
     }
 
+    public function deleteProjectAction(int $id)
+    {
+        $project = Project::findFirstById($id);
+
+        $this->delete($project);
+    }
+
+    public function deletePostsAction(int $id)
+    {
+        $post = Post::findFirstById($id);
+
+        $this->delete($post);
+    }
+
+    public function deletePackageAction(int $id)
+    {
+        $post = Post::findFirstById($id);
+
+        $this->delete($post);
+    }
+
     public function newPostAction()
     {
-        $this->isAuthenticated;
+//       / $this->isAuthenticated;
         $posts = (new Post())->setImg(
-            $this->request->getPost('img')
+            $this->getParam('img')
         )->setTitle(
-            $this->request->getPost('title')
+            $this->getParam('title')
         )->setBody(
-            $this->request->getPost('body')
+            $this->getParam('body')
         )->save();
         $this->dispatch($posts);
     }
@@ -59,11 +72,11 @@ class API extends aAPI
     {
         $this->isAuthenticated;
         $posts = Post::findFirstById($id)->setImg(
-            $this->request->getPost('img')
+            $this->getParam('img')
         )->setTitle(
-            $this->request->getPost('title')
+            $this->getParam('title')
         )->setBody(
-            $this->request->getPost('body')
+            $this->getParam('body')
         )->save();
         $this->dispatch($posts);
     }
@@ -82,28 +95,37 @@ class API extends aAPI
 
     public function newPackageAction()
     {
-        $this->isAuthenticated;
-        $posts = (new Package())->setImg(
-            $this->request->getPost('img')
-        )->setTitle(
-            $this->request->getPost('title')
-        )->setBody(
-            $this->request->getPost('body')
-        )->save();
-        $this->dispatch($posts);
+        //$this->isAuthenticated;
+        $posts = (new Package())->setType(
+            $this->getParam('type')
+        )->setName(
+            $this->getParam('name')
+        )->setSlug(
+            $this->getParam('name')
+        )->setDescription(
+            $this->getParam('description', 'description')
+        )->setLink(
+            $this->getParam('link')
+        );
+        $this->save($posts);
     }
 
     public function updatePackageAction($id)
     {
-        $this->isAuthenticated;
-        $posts = Package::findFirstById($id)->setImg(
-            $this->request->getPost('img')
-        )->setTitle(
-            $this->request->getPost('title')
-        )->setBody(
-            $this->request->getPost('body')
-        )->save();
-        $this->dispatch($posts);
+       // $this->isAuthenticated;
+        $posts = (new Package())->setType(
+            $this->getParam('type')
+        )->setName(
+            $this->getParam('name')
+        )->setSlug(
+            $this->getParam('name')
+        )->setDescription(
+            $this->getParam('description', '')
+        )->setLink(
+            $this->getParam('link')
+        );
+
+        $this->save($posts);
     }
 
     public function getProjectAction()
@@ -119,27 +141,30 @@ class API extends aAPI
     }
 
     public function newProjectAction()
-    {
-        $this->isAuthenticated;
+    {   /// TODO: Authentication
+        // $this->isAuthenticated;
         $posts = (new Project())->setImg(
-            $this->request->getPost('img')
+            $this->getParam('img')
         )->setTitle(
-            $this->request->getPost('title')
+            $this->getParam('title')
         )->setBody(
-            $this->request->getPost('body')
+            $this->getParam('body')
         )->save();
+
         $this->dispatch($posts);
     }
 
     public function updateProjectAction($id)
     {
         $posts = Project::findFirstById($id)->setImg(
-            $this->request->getPost('img')
+            $this->getParam('img')
         )->setTitle(
-            $this->request->getPost('title')
+            $this->getParam('title')
         )->setBody(
-            $this->request->getPost('body')
+            $this->getParam('body')
         )->save();
         $this->dispatch($posts);
     }
+
+
 }

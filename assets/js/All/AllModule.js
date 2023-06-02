@@ -8,7 +8,7 @@ var All = {
       withCredentials: true,
     })
       .then(function (result) {
-        All.list = result
+        All.list=[... result[1], ... result[0], ... result[2]];
       })
   },
   load: function (id) {
@@ -26,7 +26,7 @@ var All = {
 var AllList = {
   oninit: All.loadList(),
   view: function () {
-    return m(".row .grid", All.list.map(function (project) {
+    return m(".card-columns", All.list.map(function (project) {
       if (project.type === 'package') {
         return packageView(project)
       }
@@ -38,32 +38,11 @@ var AllList = {
       }
     }))
   },
-  oncreate: function (vnode) {
 
-    //$grid.masonry('layout');
-
-// trigger initial layout
-  //  $grid.masonry();
-  },
-  onupdate: function (vnode) {
-    var $grid = $('.grid');
-    $grid.imagesLoaded().progress( function() {
-      $grid.masonry({
-        columnWidth: '.grid-item',
-        itemSelector: '.grid-item',
-        percentPosition: true
-      });
-
-      // bind event
-      $grid.masonry('on', 'layoutComplete', function () {
-       /* console.log('layout is complete');*/
-      });
-    });
-  }
 };
 
 function postView(post) {
-  return m(".grid-item col-xs-12 col-sm-6 col-md-4 col-lg-3", [
+  return m(".card", [
     m('a', {class: "card", href: '/#!/' + post.type + '/' + post.id}, [
         m('div', {class: "card-img-top"},
           m(
@@ -79,8 +58,8 @@ function postView(post) {
 }
 
 function projectView(project) {
-  return m(".grid-item col-xs-12 col-sm-6 col-md-4 col-lg-3", [
-    m('a', {class: "card", href: '/#!/' + project.type + '/' + project.id}, [
+  return m(".card ", [
+    m('a', {class: "", href: '/#!/' + project.type + '/' + project.id}, [
         m('div', {class: "card-img-top"},
           m(
             'img', {class: "img-fluid", src: project.img}
@@ -94,7 +73,7 @@ function projectView(project) {
 }
 
 function packageView(packages) {
-  return m(".grid-item col-xs-12 col-sm-6 col-md-4 col-lg-3", [
+  return m(".card", [
     m('a', {class: "card", href: '//' + packages.link}, [
         m('.packages-item-title', packages.name),
         m('.packages-item-slug', m('pre', {class: 'pre'}, packages.slug.trim())),

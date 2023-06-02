@@ -6,18 +6,19 @@ use IamLab\Service\Auth\AuthService;
 use Phalcon\Http\Response;
 use Phalcon\Mvc\View\Simple;
 use Phalcon\Mvc\Url as UrlResolver;
-use Phalcon\Cache\Frontend\Data as FrontendData;
-use Phalcon\Cache\Backend\Memcache as BackendMemcache;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Session\Manager;
 use Phalcon\Session\Adapter\Stream;
+use function App\Core\Helpers\dd;
+
 /**
  * Shared configuration service
  */
+/** @var Phalcon\Di\FactoryDefault $di */
 $di->setShared(
     'config',
     function () {
-        return include  APP_PATH . "/config/config.php";
+        return include APP_PATH . "/config/config.php";
     }
 );
 
@@ -70,7 +71,26 @@ $di->setShared(
         return $url;
     }
 );
-
+$di->setShared(
+    'filepond',
+    function () {
+        return new \IamLab\Service\Filepond\FilepondService();
+    }
+);
+$di->setShared(
+    'file',
+    function () {
+        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(FILE_PATH);
+        return new League\Flysystem\Filesystem($adapter);
+    }
+);
+$di->setShared(
+    'tmp',
+    function () {
+        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(TMP_PATH);
+        return new League\Flysystem\Filesystem($adapter);
+    }
+);
 /**
  * Database connection is created based in the parameters defined in the
  * configuration file
@@ -78,15 +98,13 @@ $di->setShared(
 $di->setShared(
     'db',
     function () {
-        $config = $this->getConfig();
-
-        $dbConfig = $config->database->toArray();
+        $config = \App\Core\Helpers\config('database');
         return new Mysql(
             [
-                'host'     => 'mysql',
-                'username' => 'root',
-                'password' => '',
-                'dbname'   => 'databasename',
+                'host' => $config['host'],
+                'username' => $config['username'],
+                'password' => $config['password'],
+                'dbname' => $config['dbname'],
             ]
         );
     }
@@ -97,14 +115,14 @@ $di->set(
     function () {
 
         // Cache data for one day by default
-        $frontCache = new FrontendData(
+        $frontCache = new Memcache(
             [
                 "lifetime" => 86400,
             ]
         );
 
         // Memcached connection settings
-        $cache = new BackendMemcache(
+        $cache = new \Phalcon\Acl\Adapter\Memory(
             $frontCache,
             [
                 "host" => "localhost",

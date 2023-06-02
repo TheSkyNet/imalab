@@ -6,9 +6,6 @@ use IamLab\Service\Auth\AuthService;
 use Phalcon\Http\Response;
 use Phalcon\Mvc\View\Simple;
 use Phalcon\Mvc\Url as UrlResolver;
-use Phalcon\Cache\Frontend\Data as FrontendData;
-use Phalcon\Cache\Backend\Memcache as BackendMemcache;
-
 
 include "../vendor/autoload.php";
 ini_set('display_errors', 1);
@@ -25,32 +22,31 @@ $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
 
 
+$di = new FactoryDefault();
 
-    $di = new FactoryDefault();
+/**
+ * Include Services
+ */
+include APP_PATH . '/config/services.php';
 
-    /**
-     * Include Services
-     */
-    include APP_PATH . '/config/services.php';
+/**
+ * Call the autoloader service.  We don't need to keep the results.
+ */
+$di->getLoader();
 
-    /**
-     * Call the autoloader service.  We don't need to keep the results.
-     */
-    $di->getLoader();
+/**
+ * Starting the application
+ * Assign service locator to the application
+ */
+$app = new Micro($di);
 
-    /**
-     * Starting the application
-     * Assign service locator to the application
-     */
-    $app = new Micro($di);
+/**
+ * Include Application
+ */
+include APP_PATH . '/app.php';
 
-    /**
-     * Include Application
-     */
-    include APP_PATH . '/app.php';
-
-    /**
-     * Handle the request
-     */
-    $app->handle($_SERVER["REQUEST_URI"]);
+/**
+ * Handle the request
+ */
+$app->handle($_SERVER["REQUEST_URI"]);
 

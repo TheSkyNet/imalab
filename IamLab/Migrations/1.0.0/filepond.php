@@ -7,9 +7,9 @@ use Phalcon\Db\Reference;
 use Phalcon\Migrations\Mvc\Model\Migration;
 
 /**
- * Class PackageMigration_1
+ * Class UserMigration_1
  */
-class PackageMigration_1 extends Migration
+class FilepondMigration_1 extends Migration
 {
     /**
      * Define the table structure
@@ -19,7 +19,7 @@ class PackageMigration_1 extends Migration
      */
     public function morph(): void
     {
-        $this->morphTable('package', [
+        $this->morphTable('filepond', [
             'columns' => [
                 new Column(
                     'id',
@@ -33,64 +33,53 @@ class PackageMigration_1 extends Migration
                     ]
                 ),
                 new Column(
-                    'name',
+                    'filename',
                     [
                         'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 1000,
+                        'notNull' => false,
+                        'size' => 255,
                         'after' => 'id'
                     ]
                 ),
                 new Column(
-                    'description',
+                    'filepath',
                     [
                         'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 1000,
-                        'after' => 'name'
-                    ]
-                ),
-                new Column(
-                    'lang',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 500,
-                        'after' => 'description'
-                    ]
-                ),
-                new Column(
-                    'link',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 50,
-                        'after' => 'lang'
-                    ]
-                ),
-                new Column(
-                    'slug',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 100,
-                        'after' => 'link'
-                    ]
-                ),
-                new Column(
-                    'type',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'default' => "package",
                         'notNull' => false,
-                        'size' => 15,
-                        'after' => 'slug'
+                        'size' => 255,
+                        'after' => 'filename'
+                    ]
+                ),
+                new Column(
+                    'extension',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => false,
+                        'size' => 255,
+                        'after' => 'filepath'
+                    ]
+                ),
+                new Column(
+                    'mimetypes',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => false,
+                        'size' => 255,
+                        'after' => 'extension'
+                    ]
+                ),
+                new Column(
+                    'expires_at',
+                    [
+                        'type' => Column::TYPE_DATETIME,
+                        'notNull' => false,
+                        'size' => 6,
+                        'after' => 'mimetypes'
                     ]
                 ),
             ],
             'indexes' => [
-                new Index('package_id_uindex', ['id'], ''),
-                new Index('package_pkey', ['id'], ''),
+                new Index('filepond_pkey', ['id'], ''),
             ],
             'options' => [
                 'TABLE_TYPE' => 'BASE TABLE',

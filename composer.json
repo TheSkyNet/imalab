@@ -14,12 +14,22 @@
     "marc-mabe/php-enum": "^2.2",
     "symfony/var-dumper": "^3.1",
     "symfony/finder": "^3.1",
-    "filp/whoops": "^2.1"
+    "filp/whoops": "^2.1",
+    "ext-memcache": "*",
+    "ext-sodium": "*",
+    "defuse/php-encryption": "dev-master",
+    "nesbot/carbon": "3.x-dev",
+    "league/flysystem": "3.x-dev"
   },
   "autoload": {
     "psr-4": {
       "IamLab\\": "IamLab/"
-    }
+    },
+    "files": [
+      "IamLab/Core/Helpers/include.php"
+    ],
+
+    "include-path": ["IamLab/Core/Helpers/"]
   },
   "require-dev": {
     "phalcon/devtools": "5.0.x",

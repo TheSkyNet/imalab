@@ -5,19 +5,15 @@ use MabeEnum\Enum;
 
 class PackageType extends Enum
 {
-  const COMPOSER = 1;
-  const NPM      = 2;
+  const COMPOSER = 2;
+  const NPM      = 1;
 
   public function toString()
   {
-    switch($this->getValue())
-    {
-      case 1:
-        return 'COMPOSER';
-        break;
-      case 2:
-        return 'NPM';
-        break;
-    }
+      return match ($this->getValue()) {
+          2 => 'COMPOSER',
+          1 => 'NPM',
+          default => throw new \Exception('Unexpected value'),
+      };
   }
 }

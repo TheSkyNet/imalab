@@ -7,9 +7,9 @@ use Phalcon\Db\Reference;
 use Phalcon\Migrations\Mvc\Model\Migration;
 
 /**
- * Class PostMigration_100
+ * Class PostMigration_1
  */
-class PostMigration_100 extends Migration
+class PostMigration_1 extends Migration
 {
     /**
      * Define the table structure
@@ -28,7 +28,8 @@ class PostMigration_100 extends Migration
                         'notNull' => true,
                         'autoIncrement' => true,
                         'size' => 1,
-                        'first' => true
+                        'first' => true,
+                        'primary' => true
                     ]
                 ),
                 new Column(

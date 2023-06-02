@@ -9,11 +9,16 @@ var root = document.getElementById('main');
 
 
 m.route(root, "/", {
-    "/": AllList,
+    "/": layout(AllList),
     "/projects": ProjectList,
-    "/project/:id": ProjectOne,
+    "/project/:key": ProjectOne,
     "/packages": PackageList,
     "/posts": PostList,
     "/posts/:id": ProjectList,
     "/about": About
 });
+
+function layout(view){
+    return view;
+
+}

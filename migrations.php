@@ -6,9 +6,9 @@ return new Config([
     'database' => [
         'adapter' => 'mysql',
         'host' => 'mysql',
-        'username' => 'root',
-        'password' => '',
-        'dbname' => 'databasename',
+        'username' => 'phalcons',
+        'password' => 'phalcons',
+        'dbname' => 'phalcons',
         'charset' => 'utf8',
     ],
     'application' => [
