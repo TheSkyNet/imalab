@@ -53,21 +53,7 @@ var ProjectOne = {
         ])
     },
     onupdate: function () {
-        var img = document.createElement('img');
-        img.setAttribute('src', Project.current.img)
 
-        img.addEventListener('load', function () {
-            var vibrant = new Vibrant(img);
-            var swatches = vibrant.swatches();
-            console.log(swatches);
-            for (var swatch in swatches) {
-                if (swatches.hasOwnProperty(swatch) && swatches[swatch]) {
-                    $('.post').css('background-color', swatches[swatch].getHex());
-                    break;
-                }
-            }
-
-        });
     }
 };
 

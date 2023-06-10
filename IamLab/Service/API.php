@@ -3,6 +3,7 @@
 namespace IamLab\Service;
 
 use IamLab\Core\API\aAPI;
+use IamLab\Model\Code;
 use IamLab\Model\Filepond;
 use IamLab\Model\Package;
 use IamLab\Model\Post;
@@ -25,8 +26,9 @@ class API extends aAPI
         $posts = Post::find();
         $packages = Package::find();
         $project = Project::find();
+        $code = Code::find();
 
-        $this->dispatch([$posts, $packages, $project]);
+        $this->dispatch([$posts, $packages, $project, $code]);
     }
 
     public function getPostsAction()
@@ -48,6 +50,50 @@ class API extends aAPI
 
         $this->delete($project);
     }
+
+
+    public function getCodeAction()
+    {
+        $posts = Code::find();
+        $this->dispatch($posts);
+    }
+
+
+    public function getCodeByIdAction(int $id)
+    {
+        $posts = Code::findFirstById($id);
+        $this->dispatch($posts);
+    }
+    public function getCodeByIdHtmlAction(int $id)
+    {
+        /** @var Code $code */
+        $code = Code::findFirstById($id);
+        $this->response->setContentType('text/html', 'UTF-8');
+
+        $this->response->setContent($code->getBody());
+        $this->response->send();
+    }
+
+    public function deleteCodeAction(int $id)
+    {
+        $project = Code::findFirstById($id);
+
+        $this->delete($project);
+    }
+    public function newCodeAction()
+    {
+//       / $this->isAuthenticated;
+        dd($_POST,   $this->getParam('body'));
+        $posts = (new Code())->setImg(
+            $this->getParam('img')
+        )->setTitle(
+            $this->getParam('title')
+        )->setBody(
+            $this->getParam('body')
+        )->save();
+        $this->dispatch($posts);
+    }
+
     public function getFilesAction()
     {
         $fp =  FILE_PATH;

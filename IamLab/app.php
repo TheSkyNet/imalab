@@ -45,6 +45,12 @@ $app->post('/api/v1/project', [(new API), "newProjectAction"]);
 $app->put('/api/v1/project/{id}', [(new API), "updateProjectAction"]);
 $app->delete('/api/v1/project/{id}', [(new API), "deleteProjectAction"]) ;
 
+$app->get('/api/v1/code', [(new API), "getCodeAction"]);
+$app->get('/api/v1/code/{id}', [(new API), "getCodeByIdAction"]);
+$app->get('/api/v1/code/{id}/html', [(new API), "getCodeByIdHtmlAction"]);
+$app->post('/api/v1/code', [(new API), "newCodeAction"]);
+$app->put('/api/v1/project/{id}', [(new API), "updateCodeAction"]);
+$app->delete('/api/v1/code/{id}', [(new API), "deleteCodeAction"]) ;
 
 $app->get('/api/v1/file', [(new API()), "getFilesAction"]);
 $app->post('/api/v1/file/save', [(new API()), "saveFilesAction"]);

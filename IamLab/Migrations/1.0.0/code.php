@@ -53,9 +53,8 @@ class CodeMigration_1 extends Migration
                 new Column(
                     'body',
                     [
-                        'type' => Column::TYPE_VARCHAR,
+                        'type' => Column::TYPE_TEXT,
                         'notNull' => true,
-                        'size' => 1000,
                         'after' => 'img'
                     ]
                 ),

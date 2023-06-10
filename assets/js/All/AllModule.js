@@ -8,7 +8,7 @@ var All = {
       withCredentials: true,
     })
       .then(function (result) {
-        All.list=[... result[1], ... result[0], ... result[2]];
+        All.list=[... result[1], ... result[0], ... result[2], ...result[3]];
       })
   },
   load: function (id) {
@@ -26,6 +26,7 @@ var All = {
 var AllList = {
   oninit: All.loadList(),
   view: function () {
+    
     return m(".card-columns", All.list.map(function (project) {
       if (project.type === 'package') {
         return packageView(project)
@@ -35,6 +36,9 @@ var AllList = {
       }
       if (project.type === 'post') {
         return postView(project)
+      } 
+      if (project.type === 'code') {
+        return codeView(project)
       }
     }))
   },
@@ -51,6 +55,21 @@ function postView(post) {
         ),
         m('.grid-item-title', post.title),
         m('.grid-item-slug .slug-'+ post.type.trim(), post.type.trim())
+
+      ]
+    )
+  ])
+}
+function codeView(code) {
+  return m(".card", [
+    m('a', {class: "card", href: '/#!/' + code.type + '/' + code.id}, [
+        m('div', {class: "card-img-top"},
+          m(
+            'img', {class: "img-fluid", src: code.img}
+          )
+        ),
+        m('.grid-item-title', code.title),
+        m('.grid-item-slug .slug-'+ code.type.trim(), code.type.trim())
 
       ]
     )

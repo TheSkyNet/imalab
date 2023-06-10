@@ -4,6 +4,7 @@ import {AdminProjectList} from "./Admin/AdminProject";
 import {AdminPostList} from "./Admin/AdminPosts";
 import {AdminPackageList} from "./Admin/AdminPackage";
 import {AdminFileList} from "./Admin/AdminFiles";
+import {AdminCodeList} from "./Admin/AdminCode";
 
 require('./ImaLab.js');
 var root = document.getElementById('main');
@@ -16,6 +17,8 @@ m.route(root, "/", {
     "/post/:id": adminLayout(AdminPostList),
     "/package": adminLayout(AdminPackageList),
     "/package/:id": adminLayout(AdminPackageList),
+    "/code": adminLayout(AdminCodeList),
+    "/code/:id": adminLayout(AdminCodeList),
     "/file": adminLayout(AdminFileList),
     "/file/:id": adminLayout(AdminFileList),
 /*    "/package": AdminPackageList,
