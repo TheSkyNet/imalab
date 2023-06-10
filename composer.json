@@ -19,7 +19,7 @@
     "ext-sodium": "*",
     "defuse/php-encryption": "dev-master",
     "nesbot/carbon": "3.x-dev",
-    "league/flysystem": "3.x-dev"
+    "league/flysystem": "3.6.0"
   },
   "autoload": {
     "psr-4": {

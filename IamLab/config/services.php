@@ -81,13 +81,22 @@ $di->setShared(
     'file',
     function () {
         $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(FILE_PATH);
+
         return new League\Flysystem\Filesystem($adapter);
     }
 );
 $di->setShared(
     'tmp',
     function () {
-        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(TMP_PATH);
+
+        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(TMP_DISK);
+        return new League\Flysystem\Filesystem($adapter);
+    }
+);
+$di->setShared(
+    'fs',
+    function () {
+        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(ROOT_DISK);
         return new League\Flysystem\Filesystem($adapter);
     }
 );

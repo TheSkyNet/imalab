@@ -46,9 +46,11 @@ $app->put('/api/v1/project/{id}', [(new API), "updateProjectAction"]);
 $app->delete('/api/v1/project/{id}', [(new API), "deleteProjectAction"]) ;
 
 
+$app->get('/api/v1/file', [(new API()), "getFilesAction"]);
+$app->post('/api/v1/file/save', [(new API()), "saveFilesAction"]);
 $app->post('/api/v1/file', [(new FilepondApi()), "process"]);
 $app->patch('/api/v1/file', [(new FilepondApi()), "patch"]);
-$app->head('/api/v1/file', [(new FilepondApi()), "head"]);
+//$app->head('/api/v1/file', [(new FilepondApi()), "head"]);
 
 /*
  * Admin

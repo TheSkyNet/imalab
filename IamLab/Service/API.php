@@ -3,12 +3,20 @@
 namespace IamLab\Service;
 
 use IamLab\Core\API\aAPI;
+use IamLab\Model\Filepond;
 use IamLab\Model\Package;
 use IamLab\Model\Post;
 use IamLab\Model\Project;
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemException;
+use function App\Core\Helpers\dd;
+use function App\Core\Helpers\decrypt;
+use function App\Core\Helpers\moveTo;
 
 /**
  * @property void isAuthenticated
+ * @property Filesystem $file
+ * @property Filesystem $fs
  */
 class API extends aAPI
 {
@@ -40,6 +48,35 @@ class API extends aAPI
 
         $this->delete($project);
     }
+    public function getFilesAction()
+    {
+        $fp =  FILE_PATH;
+        $project = Filepond::find("filepath = '$fp'");
+
+
+        $this->dispatch($project);
+    }
+
+    /**
+     * @throws FilesystemException
+     * @throws \SodiumException
+     */
+    public function saveFilesAction()
+    {
+        $project = $this->file->listContents('',  true);
+
+        $id = json_decode(decrypt($this->getParam('file')));
+
+        $faile = Filepond::findFirst($id->id);
+
+        moveTo('fs',$faile->filepath.'/'.$faile->filename ,  FILE_PATH .'/'.$faile->filename );
+
+        $faile->filepath = FILE_PATH;
+
+        $faile->save();
+
+        $this->dispatch($project);
+    }
 
     public function deletePostsAction(int $id)
     {
@@ -49,6 +86,7 @@ class API extends aAPI
     }
 
     public function deletePackageAction(int $id)
+
     {
         $post = Post::findFirstById($id);
 
@@ -70,7 +108,7 @@ class API extends aAPI
 
     public function updatePostsAction($id)
     {
-        $this->isAuthenticated;
+    //    $this->isAuthenticated;
         $posts = Post::findFirstById($id)->setImg(
             $this->getParam('img')
         )->setTitle(

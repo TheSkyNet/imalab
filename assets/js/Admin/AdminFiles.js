@@ -3,10 +3,9 @@
 
 var AdminFile = {
     list: [],
-    file: {
-        name: '',
-        link: '',
-        body: '',
+    media :{
+        title: '',
+        file: '',
     },
 
     current: [],
@@ -17,7 +16,7 @@ var AdminFile = {
             withCredentials: true,
         })
             .then(function (result) {
-                AdminFile.list = result
+               AdminFile.list = result
             })
     },
     load: function (id) {
@@ -27,19 +26,19 @@ var AdminFile = {
                 withCredentials: true,
             }
         ).then(function (result) {
-      //      AdminFile.file = result
+            AdminFile.file = result
         })
     },
     addFile() {
         return m.request({
                 method: "POST",
-                url: "/api/v1/file",
+                url: "/api/v1/file/save",
                 headers: {
                     'X-CSRF-Token': this.CSRF,
                     'Accept': `application/json`
                 },
                 withCredentials: true,
-                body: AdminFile.file,
+                body: AdminFile.media,
             }
         ).then(function (result) {
             AdminFile.loadList()
@@ -62,6 +61,7 @@ var AdminFile = {
     }
 };
 var AdminFileList = {
+
     oninit: (vnode) => {
         if (vnode.attrs.id) {
             AdminFile.load(vnode.attrs.id)
@@ -75,15 +75,16 @@ var AdminFileList = {
                 m('div', {class: 'col-12'}, m("h1",
                     "Files"
                 )),
-                m("div", {class: 'col-6'},
+                m("div", {class: 'col-12'},
                     m('div',
                         {
+                            class: 'center-block',
                             oncreate: (vnode) => {
                                 const pond = FilePond.create({
                                     multiple: false,
                                     name: 'filepond',
                                     server: {
-                                        url: '/file',
+                                        url: '/api/v1/file',
                                         /* process: '/process',
                                          revert: '/process',
                                          patch: "?patch=",
@@ -91,17 +92,18 @@ var AdminFileList = {
                                               'X-CSRF-TOKEN': '{{ csrf_token() }}'
                                           }*!/*/
                                     },
-                                    chunkUploads: true
+                                   /* chunkUploads: true*/
                                 });
                                 pond.on('processfile', (error, file) => {
                                     if (error) {
                                         console.log('Oh no');
                                         return;
                                     }
-                                    this.media.title = file.file.name
-                                    this.media.file = file.serverId
+                                    AdminFile.media.title = file.file.name
+                                    AdminFile.media.file = file.serverId
                                     console.log('File added', file);
                                     console.log('File added', this.media);
+                                    AdminFile.addFile()
                                 });
 
 // Add it to the DOM
@@ -117,12 +119,12 @@ var AdminFileList = {
                         "Save"
                     ),
                 ),
-                m("div", {class: 'col-6'},
+                m("div", {class: 'col-12'},
 
                     m("div", {"class": "container"},
                         m("div", {"class": "row"},
                             m("div", {"class": "col-12"},
-                                m("table", {"class": "table table-bordered"},
+                                m("table", {"class": "table  table-responsive table-bordered"},
                                     [
                                         m("thead",
                                             m("tr",
@@ -130,6 +132,12 @@ var AdminFileList = {
 
                                                     m("th", {"scope": "col"},
                                                         "File Name"
+                                                    ),
+                                                    m("th", {"scope": "col"},
+                                                        "File Path"
+                                                    ),
+                                                    m("th", {"scope": "col"},
+                                                        "File "
                                                     ),
                                                     m("th", {"scope": "col"},
                                                         "Actions"
@@ -144,7 +152,14 @@ var AdminFileList = {
                                                     [
 
                                                         m("td",
-                                                            file.name
+                                                            file.filename
+                                                        ),
+
+                                                        m("td",
+                                                            `/files/${file.filename}`
+                                                        ),
+                                                        m("td",
+                                                            m('img', {src: `/files/${file.filename}`})
                                                         ),
                                                         m("td",
                                                             [

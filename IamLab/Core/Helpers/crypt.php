@@ -2,17 +2,19 @@
 
 namespace App\Core\Helpers;
 use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Exception\BadFormatException;
+use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
+use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
+use Defuse\Crypto\Key;
 use Exception;
-use RangeException;
 use SodiumException;
 
 /**
- * @throws SodiumException
  * @throws Exception
  */
 function crypt(string $message): string
 {
-    $key = config('encryption_key');
+    $key = Key::loadFromAsciiSafeString(config('app.encryption_key'));
     $plaintext = Crypto::encrypt($message, $key);;
     return $plaintext;
 }
@@ -21,14 +23,14 @@ function crypt(string $message): string
  * Decrypt a message
  *
  * @param string $encrypted - message encrypted with safeEncrypt()
- * @param string $key - encryption key
  * @return string
- * @throws Exception
- * @throws SodiumException
+ * @throws BadFormatException
+ * @throws EnvironmentIsBrokenException
+ * @throws WrongKeyOrModifiedCiphertextException
  */
 function decrypt(string $encrypted ): string
 {
-    $key = config('encryption_key');
+    $key = Key::loadFromAsciiSafeString(config('app.encryption_key'));
     $plaintext = Crypto::decrypt($encrypted, $key);;
     return $plaintext;
 }

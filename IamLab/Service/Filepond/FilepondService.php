@@ -3,13 +3,17 @@
 namespace IamLab\Service\Filepond;
 
 use Carbon\Carbon;
+use ErrorException;
 use IamLab\Model\Filepond;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use Phalcon\Http\Request;
 use function App\Core\Helpers\collect;
 use function App\Core\Helpers\config;
+use function App\Core\Helpers\dd;
+use function App\Core\Helpers\decrypt;
 use function App\Core\Helpers\di;
+use function App\Core\Helpers\moveTo;
 
 /**
  * @property Filesystem $tmp Filesystem
@@ -23,8 +27,8 @@ class FilepondService
     public function __construct()
     {
         $this->disk = config('filepond', 'public')['disk'];
-        $this->tempDisk = config('filepond', 'local')['temp_disk'];
-        $this->tempFolder = config('filepond', 'filepond/temp')['temp_folder'];
+        $this->tempDisk = TMP_DISK;
+        $this->tempFolder = TMP_PATH;
     }
 
     /**
@@ -35,9 +39,7 @@ class FilepondService
      */
     protected function getUploadedFile(Request $request)
     {
-        $input = collect($request->getUploadedFiles())->first();
-
-        return is_array($input) ? $input[0] : $input;
+        return collect($request->getUploadedFiles())->first();
     }
 
     /**
@@ -49,9 +51,9 @@ class FilepondService
      */
     public function validator(Request $request, array $rules)
     {
-        $field = array_key_first($request->all());
-
-        return Validator::make([$field => $this->getUploadedFile($request)], [$field => $rules]);
+        // $field = array_key_first($request->all());
+        return $this->getUploadedFile($request);
+        //return Validator::make([$field => $this->getUploadedFile($request)], [$field => $rules]);
     }
 
     /**
@@ -60,21 +62,28 @@ class FilepondService
      * @param Request $request
      * @return string
      */
-    public function store(Request $request)
+    public function store(Request $request): string
     {
         $file = $this->getUploadedFile($request);
-
-        $filepond = Filepond::create([
-            'filepath' => $file->store($this->tempFolder, $this->tempDisk),
-            'filename' => $file->getClientOriginalName(),
-            'extension' => $file->getClientOriginalExtension(),
-            'mimetypes' => $file->getClientMimeType(),
-            'disk' => $this->disk,
-            'created_by' => auth()->id(),
-            'expires_at' => now()->addMinutes(config('filepond.expiration', 30))
+        $name = uniqid() . '.' . $file->getExtension();
+        try{
+            $mimetypes = $file->getRealType();
+            $file->moveTo(TMP_DISK . '/' . $name);
+        }catch ( ErrorException $exception){
+            dd($exception);
+        };
+        $filepond = (new Filepond)->assign([
+            'filepath' => $this->tempDisk,
+            'filename' => $name, // $file->getOriginalName(),
+            'mimetypes' => $mimetypes,
+            'disk' => $this->tempDisk,
+            'expires_at' => Carbon::now()->addMinutes(config('expiration', 30))
         ]);
 
-        return Crypt::encrypt(['id' => $filepond->id]);
+        $filepond->create();
+        return \App\Core\Helpers\crypt(
+            json_encode(['id' => $filepond->id])
+        );
     }
 
     /**
@@ -87,8 +96,7 @@ class FilepondService
     {
         $input = decrypt($content);
 
-        return Filepond::owned()
-            ->where('id', $input['id'])
+        return Filepond::where('id', $input['id'])
             ->firstOrFail();
     }
 
@@ -108,7 +116,7 @@ class FilepondService
                 'extension' => '',
                 'mimetypes' => '',
                 'disk' => $this->disk,
-                'expires_at' => Carbon::now()->addMinutes(config('filepond', 30)["expiration"])
+                'expires_at' => Carbon::now()->addMinutes(30)
             ]
         );
         $filepond->create();
@@ -134,7 +142,7 @@ class FilepondService
         $id = \App\Core\Helpers\decrypt(
             json_decode($request->getPatch())['id']
         );
-       // $id = Crypt::decrypt($request->patch)['id'];
+        // $id = Crypt::decrypt($request->patch)['id'];
 
         $dir = Storage::disk($this->tempDisk)->path($this->tempFolder . '/' . $id . '/');
 
