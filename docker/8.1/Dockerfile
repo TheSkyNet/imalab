@@ -46,8 +46,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && pecl channel-update pecl.php.net \
-    && "yes\n" | pecl install -f phalcon \
-    && chmod 755 -R /var/www/
+    && "yes\n" | pecl install -f phalcon
 
 
 
