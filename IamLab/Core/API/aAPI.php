@@ -16,6 +16,7 @@ abstract class aAPI extends \Phalcon\Di\Injectable
         $this->response->setContentType('application/json', 'UTF-8');
         $this->response->setContent(json_encode($data));
         $this->response->send();
+        exit();
     }
     protected function delete($data)
     {

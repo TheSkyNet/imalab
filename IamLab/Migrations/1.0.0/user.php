@@ -51,6 +51,15 @@ class UserMigration_1 extends Migration
                     ]
                 ),
                 new Column(
+                    'key',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => true,
+                        'size' => 255,
+                        'after' => 'password'
+                    ]
+                ),
+                new Column(
                     'password',
                     [
                         'type' => Column::TYPE_VARCHAR,

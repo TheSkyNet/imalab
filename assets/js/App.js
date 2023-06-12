@@ -4,6 +4,7 @@ import {PackageList} from "./Package/PackageModule";
 import {PostList} from "./Post/PostsModule";
 import {About} from "./About/AboutModule";
 import {CodeList, CodeOne} from "./Code/CodeModule";
+import {LoginList} from "./Login/LoginModule";
 
 require('./ImaLab.js');
 var root = document.getElementById('main');
@@ -18,7 +19,8 @@ m.route(root, "/", {
     "/posts/:id": ProjectList,
     "/code/:id": CodeOne,
     "/code": CodeList,
-    "/about": About
+    "/about": About,
+    "/login": LoginList
 });
 
 function layout(view){

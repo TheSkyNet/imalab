@@ -81,6 +81,7 @@ $app->get(
   }
 );
 $app->post('/auth', [(new Auth()), "authAction"]);
+$app->get('/auth', [(new Auth()), "userAction"]);
 /**
  * Not found handler
  */

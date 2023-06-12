@@ -159,7 +159,7 @@ $di->setShared(
                 'savePath' => '/tmp',
             ]
         );
-        $session->setAdapter($files);
+        $session->setAdapter($files)->start();
         return $session;
     }
 );

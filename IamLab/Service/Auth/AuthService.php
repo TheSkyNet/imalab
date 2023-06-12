@@ -11,6 +11,7 @@ namespace IamLab\Service\Auth;
 use IamLab\Core\API\aAPI;
 use IamLab\Model\User;
 use Phalcon\Mvc\User\Component;
+use function App\Core\Helpers\dd;
 
 class AuthService extends aAPI
 {
@@ -19,7 +20,7 @@ class AuthService extends aAPI
 
   public function isAuthenticated()
   {
-    return (bool)$this->getIdentity();
+    return (bool) $this->getIdentity();
   }
 
   /**
@@ -50,7 +51,9 @@ class AuthService extends aAPI
   {
 
     $password = $user->getPassword();
+
     $user = User::findFirst("email='{$user->getEmail()}'");
+
     if (!$user) {
       return false;
     }
@@ -58,7 +61,7 @@ class AuthService extends aAPI
     if (password_verify($password, $user->getPassword())) {
       $this->setIdentity($user);
 
-      return true;
+      return $user;
     }
     return false;
   }
@@ -76,8 +79,9 @@ class AuthService extends aAPI
     );
   }
 
-  private function getIdentity()
+  public function getIdentity()
   {
+
     return $this->session->get('auth-identity');
   }
 

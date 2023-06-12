@@ -79,8 +79,10 @@ class API extends aAPI
             $this->getParam('name')
         )->setEmail(
             $this->getParam('email')
+        )->setKey(
+            uniqid()
         )->setPassword(
-            $this->getParam('password')
+            password_hash($this->getParam('password'), PASSWORD_DEFAULT)
         )->save();
         $this->dispatch($user);
     }
