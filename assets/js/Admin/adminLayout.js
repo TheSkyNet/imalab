@@ -33,6 +33,19 @@ function adminLayout(view) {
                                                 )
                                             ),
                                         ]
+                                    ),
+                                    m("ul", {"class": "nav flex-column"},
+                                        [
+                                            m("li", {"class": "nav-item"},
+                                                m(m.route.Link, {
+                                                        "class": "nav-link",
+                                                        href: "/user",
+                                                        options: {replace: true},
+                                                    },
+                                                    " User "
+                                                )
+                                            ),
+                                        ]
                                     )
                                     ,  m("ul", {"class": "nav flex-column"},
                                         [

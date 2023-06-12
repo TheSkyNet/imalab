@@ -8,6 +8,7 @@ use IamLab\Model\Filepond;
 use IamLab\Model\Package;
 use IamLab\Model\Post;
 use IamLab\Model\Project;
+use IamLab\Model\User;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use function App\Core\Helpers\dd;
@@ -51,6 +52,39 @@ class API extends aAPI
         $this->delete($project);
     }
 
+    public function getUsersAction()
+    {
+        $posts = User::find();
+        $this->dispatch($posts);
+    }
+
+
+    public function getUsersByIdAction(int $id)
+    {
+        $posts = User::findFirstById($id);
+        $this->dispatch($posts);
+    }
+
+    public function deleteUserAction(int $id)
+    {
+        $project = User::findFirstById($id);
+
+        $this->delete($project);
+    }
+
+    public function newUserAction()
+    {
+//       / $this->isAuthenticated;
+        $user = (new User())->setName(
+            $this->getParam('name')
+        )->setEmail(
+            $this->getParam('email')
+        )->setPassword(
+            $this->getParam('password')
+        )->save();
+        $this->dispatch($user);
+    }
+
 
     public function getCodeAction()
     {
@@ -64,6 +98,7 @@ class API extends aAPI
         $posts = Code::findFirstById($id);
         $this->dispatch($posts);
     }
+
     public function getCodeByIdHtmlAction(int $id)
     {
         /** @var Code $code */
@@ -80,10 +115,11 @@ class API extends aAPI
 
         $this->delete($project);
     }
+
+
     public function newCodeAction()
     {
 //       / $this->isAuthenticated;
-        dd($_POST,   $this->getParam('body'));
         $posts = (new Code())->setImg(
             $this->getParam('img')
         )->setTitle(
@@ -96,7 +132,7 @@ class API extends aAPI
 
     public function getFilesAction()
     {
-        $fp =  FILE_PATH;
+        $fp = FILE_PATH;
         $project = Filepond::find("filepath = '$fp'");
 
 
@@ -109,13 +145,13 @@ class API extends aAPI
      */
     public function saveFilesAction()
     {
-        $project = $this->file->listContents('',  true);
+        $project = $this->file->listContents('', true);
 
         $id = json_decode(decrypt($this->getParam('file')));
 
         $faile = Filepond::findFirst($id->id);
 
-        moveTo('fs',$faile->filepath.'/'.$faile->filename ,  FILE_PATH .'/'.$faile->filename );
+        moveTo('fs', $faile->filepath . '/' . $faile->filename, FILE_PATH . '/' . $faile->filename);
 
         $faile->filepath = FILE_PATH;
 
@@ -154,7 +190,7 @@ class API extends aAPI
 
     public function updatePostsAction($id)
     {
-    //    $this->isAuthenticated;
+        //    $this->isAuthenticated;
         $posts = Post::findFirstById($id)->setImg(
             $this->getParam('img')
         )->setTitle(
@@ -196,7 +232,7 @@ class API extends aAPI
 
     public function updatePackageAction($id)
     {
-       // $this->isAuthenticated;
+        // $this->isAuthenticated;
         $posts = (new Package())->setType(
             $this->getParam('type')
         )->setName(

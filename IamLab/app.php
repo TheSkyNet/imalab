@@ -32,6 +32,12 @@ $app->post('/api/v1/post', [(new API), "newPostAction"]);
 $app->put('/api/v1/post/{id}', [(new API), "updatePostsAction"]);
 $app->delete('/api/v1/post/{id}', [(new API), "deletePostsAction"]) ;
 
+$app->get('/api/v1/user', [(new API), "getUsersAction"]);
+$app->get('/api/v1/user/{id}', [(new API), "getUserByIdAction"]);
+$app->post('/api/v1/user', [(new API), "newUserAction"]);
+$app->put('/api/v1/user/{id}', [(new API), "updateUserAction"]);
+$app->delete('/api/v1/user/{id}', [(new API), "deleteUserAction"]) ;
+
 $app->get('/api/v1/package', [(new API), "getPackageAction"]);
 $app->get('/api/v1/package/{id}', [(new API), "getPackageByIdAction"]);
 $app->post('/api/v1/package', [(new API), "newPackageAction"]);

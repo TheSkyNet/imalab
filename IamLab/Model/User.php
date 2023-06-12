@@ -3,6 +3,7 @@
 namespace IamLab\Model;
 
 use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Validator\Email as Email;
 
 class User extends Model
@@ -164,15 +165,7 @@ class User extends Model
     $this->setSource('user');
   }
 
-  /**
-   * Returns table name mapped in the model.
-   *
-   * @return string
-   */
-  public function getSource()
-  {
-    return 'user';
-  }
+
 
   /**
    * Allows to query a set of records that match the specified conditions
@@ -181,7 +174,7 @@ class User extends Model
    *
    * @return User[]|Model\ResultsetInterface
    */
-  public static function find($parameters = null)
+    public static function find($parameters = null): ResultsetInterface
   {
     return parent::find($parameters);
   }
