@@ -47,7 +47,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN pecl channel-update pecl.php.net \
-    && "yes\n" | pecl install -f phalcon > /dev/null 2>&1
+    && pecl install -f phalcon > /dev/null 2>&1
 
 
 
