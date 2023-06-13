@@ -45,7 +45,8 @@ RUN apt-get update \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && pecl channel-update pecl.php.net \
+
+RUN pecl channel-update pecl.php.net \
     && "yes\n" | pecl install -f phalcon
 
 
