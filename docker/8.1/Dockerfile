@@ -46,7 +46,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN sudo add-apt-repository ppa:ondrej/php \
+RUN add-apt-repository ppa:ondrej/php \
     && apt-get update \
     && apt-get install php-phalcon5 \
 
