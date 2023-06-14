@@ -46,8 +46,9 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN pecl channel-update pecl.php.net
-
+RUN sudo add-apt-repository ppa:ondrej/php \
+    && apt-get update \
+    && apt-get install php-phalcon5 \
 
 
 
