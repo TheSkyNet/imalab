@@ -49,7 +49,7 @@ RUN apt-get update \
 RUN add-apt-repository ppa:ondrej/php \
     && apt-get update \
 
-RUN apt-get install php-phalcon5 -Y
+RUN apt-get install php-phalcon5
 
 
 
