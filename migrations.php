@@ -1,5 +1,5 @@
 <?php
-
+defined('APP_PATH') || define('APP_PATH', realpath('./IamLab'));
 use Phalcon\Config\Config;
 
 return new Config([
@@ -16,8 +16,8 @@ return new Config([
         'no-auto-increment' => true,
         'skip-ref-schema' => true,
         'skip-foreign-checks' => true,
-        'migrationsDir' => 'IamLab/Migrations/',
-        'migrationsTsBased' => true, // true - Use TIMESTAMP as version name, false - use versions
+        'migrationsDir' => APP_PATH . '/Migrations/',
+        'migrationsTsBased' => false, // true - Use TIMESTAMP as version name, false - use versions
         'exportDataFromTables' => [
             // Tables names
             // Attention! It will export data every new migration

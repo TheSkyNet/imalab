@@ -54,7 +54,7 @@ class UserMigration_100 extends Migration
                     'key',
                     [
                         'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
+                        'notNull' => false,
                         'size' => 255,
                         'after' => 'password'
                     ]
@@ -90,6 +90,22 @@ class UserMigration_100 extends Migration
      */
     public function up(): void
     {
+        $this->getConnection()->insert(
+            'user',
+            [
+                'Admin',
+                'PASSWORD_USERNAME',
+                password_hash(
+                    'PASSWORD_DEFAULT',
+                    PASSWORD_DEFAULT
+                )
+            ],
+            [
+                'name',
+                'email',
+                'password',
+            ]
+        );
     }
 
     /**
