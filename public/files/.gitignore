@@ -6,7 +6,7 @@
 composer.lock
 /public/css/*
 /public/files/*
-/public/img/*
+
 /public/js/*
 /public/temp/*
 
