@@ -46,11 +46,8 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN add-apt-repository ppa:ondrej/php
 
-RUN apt-get update
 
-RUN apt-get install php-phalcon5
 
 
 
@@ -61,6 +58,7 @@ RUN groupadd --force -g $WWWGROUP phalcons
 RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 phalcons
 
 COPY start-container /usr/local/bin/start-container
+COPY phalcon.so /usr/lib/php/20210902
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php/8.1/cli/conf.d/99-phalcon.ini
 RUN chmod +x /usr/local/bin/start-container
