@@ -1,3 +1,5 @@
+const EasyMDE = require("easymde");
+
 var AdminProject = {
     list: [],
     project: {
@@ -137,7 +139,8 @@ var AdminProjectList = {
                                     m("label", {"for": "exampleFormControlTextarea1"},
                                         "Example textarea"
                                     ),
-                                    m("textarea", {
+                                    m(EasyMDEComponent, {body: AdminProject.project.body})
+                                    /*m("textarea", {
                                             "class": "form-control",
                                             "id": "exampleFormControlTextarea1",
                                             "rows": "3",
@@ -146,7 +149,7 @@ var AdminProjectList = {
                                             },
                                         },
                                         AdminProject.project.body
-                                    )
+                                    )*/
                                 ]
                             ),
                             m("button", {"class": "btn btn-primary btn-lg btn-block", "type": "submit"},
@@ -237,5 +240,17 @@ var AdminProjectList = {
     }
 };
 
-
-module.exports = {AdminProjectList, AdminProject}
+let EasyMDEComponent = {
+    view: function (vnode) {
+        return m('textarea', {
+            oncreate: (vnode) => {
+                new EasyMDE({
+                    element: vnode.dom
+                });
+            }, onchange: (e) => {
+                vnode.attrs.body = e.target.value
+            }
+        }, vnode.attrs.body);
+    }
+};
+module.exports = {AdminProjectList, AdminProject, EasyMDEComponent}
