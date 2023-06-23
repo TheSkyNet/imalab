@@ -53,6 +53,7 @@ RUN apt-get update \
 
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
+RUN apt-get install certbot python3-certbot-apache
 
 RUN groupadd --force -g $WWWGROUP phalcons
 RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 phalcons
