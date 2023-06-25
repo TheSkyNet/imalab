@@ -44,7 +44,7 @@ var AdminPackage = {
     },
     updatePackage() {
         return m.request({
-                method: "POST",
+                method: "PUT",
                 url: "/api/v1/package",
                 headers: {
                     'X-CSRF-Token': this.CSRF,

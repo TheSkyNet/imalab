@@ -55,10 +55,10 @@ var AdminProject = {
             AdminProject.loadList()
         })
     },
-    updateProject() {
+    updateProject(id) {
         return m.request({
-                method: "POST",
-                url: "/api/v1/project",
+                method: "PUT",
+                url: "/api/v1/project/" + id,
                 headers: {
                     'X-CSRF-Token': this.CSRF,
                     'Accept': `application/json`
@@ -73,14 +73,25 @@ var AdminProject = {
 };
 
 var AdminProjectList = {
+    loading: true,
     oninit: (vnode) => {
         if (vnode.attrs.id) {
-            AdminProject.load(vnode.attrs.id)
+            AdminProject.load(vnode.attrs.id).then(() => {
+                AdminProjectList.loading = false
+            })
+            // ;
         }
-        AdminProject.loadList()
+        AdminProject.loadList().then(() => {
+            AdminProjectList.loading = false
+        })
 
     },
     view: function (vnode) {
+        console.log(AdminProjectList.loading);
+        if (AdminProjectList.loading) {
+
+            return m('div', 'loading');
+        }
         return m("div", {"class": "row"},
             [
                 m('div', {class: 'col-12'}, m("h1",
@@ -91,8 +102,9 @@ var AdminProjectList = {
                         m("form", {
                                 onsubmit: (e) => {
                                     event.preventDefault();
+
                                     if (vnode.attrs.id) {
-                                        AdminProject.updateProject()
+                                        AdminProject.updateProject(vnode.attrs.id)
                                     } else {
                                         AdminProject.addProject()
                                     }
@@ -139,17 +151,20 @@ var AdminProjectList = {
                                     m("label", {"for": "exampleFormControlTextarea1"},
                                         "Example textarea"
                                     ),
-                                    m(EasyMDEComponent, {body: AdminProject.project.body})
-                                    /*m("textarea", {
-                                            "class": "form-control",
-                                            "id": "exampleFormControlTextarea1",
-                                            "rows": "3",
-                                            onchange: (e) => {
-                                                AdminProject.project.body = e.target.value;
-                                            },
+                                    m('textarea', {
+                                        oncreate: function (vnode) {
+                                            AdminProjectList.easyMDE = new EasyMDE({
+                                                element: vnode.dom
+                                            });
+                                            console.log(AdminProject);
+                                            AdminProjectList.easyMDE.value(AdminProject.project.body)
+                                            AdminProjectList.easyMDE.codemirror.on("change", () => {
+                                                AdminProject.project.body = AdminProjectList.easyMDE.value()
+                                            });
                                         },
-                                        AdminProject.project.body
-                                    )*/
+
+                                    }, AdminProject.project.body)
+
                                 ]
                             ),
                             m("button", {"class": "btn btn-primary btn-lg btn-block", "type": "submit"},
@@ -228,29 +243,8 @@ var AdminProjectList = {
 
 
     },
-    oncreate: function (vnode) {
 
-        //$grid.masonry('layout');
-
-// trigger initial layout
-        //  $grid.masonry();
-    },
-    onupdate: function (vnode) {
-
-    }
 };
 
-let EasyMDEComponent = {
-    view: function (vnode) {
-        return m('textarea', {
-            oncreate: (vnode) => {
-                new EasyMDE({
-                    element: vnode.dom
-                });
-            }, onchange: (e) => {
-                vnode.attrs.body = e.target.value
-            }
-        }, vnode.attrs.body);
-    }
-};
-module.exports = {AdminProjectList, AdminProject, EasyMDEComponent}
+
+module.exports = {AdminProjectList, AdminProject}

@@ -131,6 +131,18 @@ class API extends aAPI
         )->save();
         $this->dispatch($posts);
     }
+    public function updateCodeAction()
+    {
+//       / $this->isAuthenticated;
+        $posts = (new Code())->setImg(
+            $this->getParam('img')
+        )->setTitle(
+            $this->getParam('title')
+        )->setBody(
+            $this->getParam('body')
+        )->save();
+        $this->dispatch($posts);
+    }
 
     public function getFilesAction()
     {

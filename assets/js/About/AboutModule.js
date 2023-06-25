@@ -19,9 +19,9 @@ var About = {
 };
 
 var AboutModule = {
-    oninit: About.load(),
+   // oninit: About.load(),
     view: function () {
-        var md = markdown.toHTML(About.current);
+       // var md = markdown.toHTML(About.current);
 
         return m("div", {class: 'container card '}, [
 
@@ -29,7 +29,7 @@ var AboutModule = {
                 class: 'btn btn-info btn-download float-right',
                 href: 'http://iamlab.tech/files/Kevin-Morton-CV.pdf'
             }, 'download my cv'),
-            m('.card-block', m.trust(md)),
+            m('.card-block', m.trust('md')),
         ]);
     }
 };

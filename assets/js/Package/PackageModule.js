@@ -25,11 +25,11 @@ var Package = {
 };
 
 var PackageList = {
-  oninit: Package.loadList(),
+  oninit: Package.loadList,
   view: function () {
     return m(".row .grid", Package.list.map(function (packages) {
       return m(".grid-item col-xs-12 col-sm-6 col-md-4 col-lg-3", [
-        m('a', {class: "card", href: '//' + packages.link}, [
+        m('a', {class: "card", href:  'https://packagist.org/packages/' + packages.link.trim()}, [
             m('.packages-item-title', packages.name),
             m('.packages-item-slug', m('pre', {class: 'pre'}, packages.slug.trim())),
             m('.grid-item-slug .slug-'+ packages.lang.trim(), packages.lang.trim())
@@ -38,17 +38,6 @@ var PackageList = {
       ])
     }))
   },
-  oncreate: function (vnode) {
-    var $grid = $('.grid');
-    $grid.masonry({
-      columnWidth: '.grid-item',
-      itemSelector: '.grid-item',
-      percentPosition: true
-    });
-    // bind event
-    $grid.masonry('on', 'layoutComplete', function () {
-      console.log('layout is complete')
-    });
-  },
+
 };
 module.exports = {PackageList, Package}

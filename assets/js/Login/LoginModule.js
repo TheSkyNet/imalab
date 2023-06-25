@@ -17,7 +17,7 @@ var Login = {
 
             Object.assign(Auth, result);
 
-          //  window.location.reload();
+             window.location.reload();
 
 
            // Login.current = result

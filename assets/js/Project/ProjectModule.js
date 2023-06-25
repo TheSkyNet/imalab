@@ -1,4 +1,6 @@
-var Project = {
+const extractColors = require("extract-colors").default;
+const showdown = require('showdown')
+let Project = {
     list: [],
     current: {
         id: '',
@@ -28,20 +30,42 @@ var Project = {
     }
 };
 
-var ProjectOne = {
+let ProjectOne = {
+    loading: true,
+    color: '#fff',
     oninit: function (vnode) {
-        Project.load(vnode.attrs.id)
+        Project.load(vnode.attrs.key).then(() => {
+            ProjectOne.loading = false;
+        })
     },
     view: function () {
-        var md = markdown.toHTML(Project.current.body);
+        if (ProjectOne.loading) {
+            return 'loading'
 
+        }
+        const converter = new showdown.Converter();
+        const md = converter.makeHtml(Project.current.body);
         return m(".container .post-container", [
-            m('div', {class: "card post"},
+            m('div', {class: "card post", style: {'background-color': ProjectOne.color}},
                 m('', [
                         m('div', {class: "col"},
                             m('div', {id: '', class: "post-img-top"},
                                 m(
-                                    'img', {id: 'thing_img', class: "img-fluid", src: Project.current.img}
+                                    'img', {
+                                        id: 'thing_img',
+                                        class: "img-fluid",
+                                        src: Project.current.img,
+                                        oncreate: (vnode) => {
+                                            extractColors(Project.current.img)
+                                                .then((r) => {
+                                                    ProjectOne.color = r[1]?.hex;
+                                                    m.redraw()
+                                                })
+                                                .catch(console.error)
+
+
+                                        }
+                                    }
                                 ),
                                 m('.grid-item-slug .slug-' + Project.current.type.trim(), Project.current.type.trim())
                             ),
@@ -57,59 +81,30 @@ var ProjectOne = {
     }
 };
 
-var ProjectList = {
-    oninit: Project.loadList(),
+let ProjectList = {
+    oninit: Project.loadList,
     view: function () {
-        return m(".row .grid", Project.list.map(function (project) {
-            return m(".grid-item col-xs-12 col-sm-6 col-md-4 col-lg-3", [
-                m('a', {class: "card", href: '/#!/' + project.type + '/' + project.id}, [
-                        m('div', {class: "card-img-top"},
-                            m(
-                                'img', {class: "img-fluid", src: project.img}
-                            )
-                        ),
-                        /* m('.grid-item-title', project.title),*/
-                        m('.grid-item-slug .slug-' + project.type.trim(), project.type.trim())
-                    ]
-                )
-            ])
+        if (ProjectList.loading) {
+            return 'loading'
+
+        }
+        return m(".card-columns", Project.list.map(function (project) {
+            return m(m.route.Link, {class: "card", href: `/project/${project.id}`}, [
+                    m('div', {class: "card-img-top"},
+                        m(
+                            'img', {
+                                class: "img-fluid", src: project.img,
+                            }
+                        )
+                    ),
+                    /* m('.grid-item-title', project.title),*/
+                    m('.grid-item-slug .slug-' + project.type.trim(), project.type.trim())
+                ]
+            )
+
         }))
     },
-    onupdate: function (vnode) {
-        var $grid = $('.grid');
-        $grid.imagesLoaded().progress(function () {
-            $grid.masonry({
-                columnWidth: '.grid-item',
-                itemSelector: '.grid-item',
-                percentPosition: true
-            });
 
-            // bind event
-            $grid.masonry('on', 'layoutComplete', function () {
-                /*
-                        console.log('layout is complete')
-                */
-            });
-        });
-
-    },
-    oncreate: function (vnode) {
-        var $grid = $('.grid');
-        $grid.imagesLoaded().progress(function () {
-            $grid.masonry({
-                columnWidth: '.grid-item',
-                itemSelector: '.grid-item',
-                percentPosition: true
-            });
-
-            // bind event
-            $grid.masonry('on', 'layoutComplete', function () {
-                /*
-                        console.log('layout is complete')
-                */
-            });
-        });
-    },
 };
 
 

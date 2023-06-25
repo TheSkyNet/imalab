@@ -6,10 +6,13 @@
   "dependencies": {
     "bootstrap-sweetalert": "^1.0.1",
     "easymde": "^2.18.0",
+    "extract-colors": "^3.0.0",
     "filepond": "^4.30.4",
     "imagesloaded": "^5.0.0",
     "markdown": "^0.5.0",
-    "simplemde": "^1.11.2"
+    "showdown": "^2.1.0",
+    "simplemde": "^1.11.2",
+    "vibrant": "^0.0.1"
   },
   "author": "",
   "license": "ISC",

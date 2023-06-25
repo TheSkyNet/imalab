@@ -25,6 +25,7 @@ var Code = {
 var CodeList = {
     oninit: Code.loadList(),
     view: function () {
+
         return m(".row", Code.list.map(function (code) {
             return m(".grid-item col-xs-12 col-sm-6 col-md-4 col-lg-3", [
                 m('a', {class: "card", href: '/#!/' + code.type + '/' + code.id}, [
@@ -42,11 +43,17 @@ var CodeList = {
 };
 
 var CodeOne = {
+    loading:true,
     oninit: function (vnode) {
-        Code.load(vnode.attrs.id)
+        Code.load(vnode.attrs.id).then(() => {
+            CodeOne.loading = false
+        })
     },
     view: function () {
+        if (CodeOne.loading) {
+            return 'loading'
 
+        }
         return m(".embed-responsive .embed-responsive-1by1 ", [
             m("iframe", {
                 "id": "iframeResult",
