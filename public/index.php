@@ -7,6 +7,7 @@ use Phalcon\Http\Response;
 use Phalcon\Mvc\View\Simple;
 use Phalcon\Mvc\Url as UrlResolver;
 
+
 include "../vendor/autoload.php";
 define('APP_PATH', realpath('../IamLab'));
 if (!file_exists(__DIR__ . '/' . $_SERVER['REQUEST_URI'])) {
@@ -21,7 +22,7 @@ $whoops->register();
 
 \App\Core\Helpers\loadEnv('.env');
 
-if(\App\Core\Helpers\env('',) == 'debug'){
+if (\App\Core\Helpers\env('APP_DEBUG') == 'debug') {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
