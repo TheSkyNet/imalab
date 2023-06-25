@@ -33,7 +33,8 @@
   },
   "require-dev": {
     "phalcon/devtools": "5.0.x",
-    "phalcon/migrations": "3.0.x"
+    "phalcon/migrations": "3.0.x",
+    "mpyw/php-hyper-builtin-server": "^3.0"
   },
   "repositories": [
     {
