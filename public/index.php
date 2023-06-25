@@ -8,18 +8,24 @@ use Phalcon\Mvc\View\Simple;
 use Phalcon\Mvc\Url as UrlResolver;
 
 include "../vendor/autoload.php";
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 define('APP_PATH', realpath('../IamLab'));
-
 if (!file_exists(__DIR__ . '/' . $_SERVER['REQUEST_URI'])) {
     $_GET['_url'] = $_SERVER['REQUEST_URI'];
 }
+\App\Core\Helpers\loadEnv('.env');
+
 $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
+
+
+\App\Core\Helpers\loadEnv('.env');
+
+if(\App\Core\Helpers\env('',) == 'debug'){
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}
 
 
 $di = new FactoryDefault();

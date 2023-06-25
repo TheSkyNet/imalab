@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Core\Helpers;
+use IamLab\Core\Env\Env;
+
 /** @var \Phalcon\Di\FactoryDefault $di */
 
 function config($key, $default = null)
@@ -42,4 +44,8 @@ function dd(...$variable)
     echo '<pre>';
     die(var_dump($variable));
     echo '</pre>';
+}
+
+function loadEnv($path =''){
+      (new Env($path))->load();
 }

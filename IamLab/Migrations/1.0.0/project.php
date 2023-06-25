@@ -53,9 +53,8 @@ class ProjectMigration_100 extends Migration
                 new Column(
                     'body',
                     [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 1000,
+                        'type' => Column::TYPE_TEXT,
+                        'notNull' => false,
                         'after' => 'title'
                     ]
                 ),
