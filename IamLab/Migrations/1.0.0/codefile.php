@@ -9,7 +9,7 @@ use Phalcon\Migrations\Mvc\Model\Migration;
 /**
  * Class UserMigration_100
  */
-class UserMigration_100 extends Migration
+class CodeFileMigration_100 extends Migration
 {
     /**
      * Define the table structure
@@ -19,7 +19,7 @@ class UserMigration_100 extends Migration
      */
     public function morph(): void
     {
-        $this->morphTable('user', [
+        $this->morphTable('code_file', [
             'columns' => [
                 new Column(
                     'id',
@@ -33,46 +33,46 @@ class UserMigration_100 extends Migration
                     ]
                 ),
                 new Column(
-                    'name',
+                    'path',
                     [
                         'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
+                        'notNull' => false,
                         'size' => 50,
                         'after' => 'id'
                     ]
                 ),
                 new Column(
-                    'email',
-                    [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 50,
-                        'after' => 'name'
-                    ]
-                ),
-                new Column(
-                    'key',
+                    'code_id',
                     [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => false,
-                        'size' => 255,
-                        'after' => 'password'
+                        'size' => 50,
+                        'after' => 'id'
                     ]
                 ),
                 new Column(
-                    'password',
+                    'content',
                     [
-                        'type' => Column::TYPE_VARCHAR,
-                        'notNull' => true,
-                        'size' => 255,
-                        'after' => 'email'
+                        'type' => Column::TYPE_TEXT,
+                        'notNull' => false,
+                        'size' => 50,
+                        'after' => 'id'
                     ]
                 ),
+                new Column(
+                    'type',
+                    [
+                        'type' => Column::TYPE_VARCHAR,
+                        'notNull' => false,
+                        'size' => 50,
+                        'after' => 'id'
+                    ]
+                ),
+
             ],
             'indexes' => [
-                new Index('user_email_uindex', ['email'], ''),
-                new Index('user_id_uindex', ['id'], ''),
-                new Index('user_pkey', ['id'], ''),
+                new Index('code_file_id_uindex', ['id'], ''),
+                new Index('code_file_pkey', ['id'], ''),
             ],
             'options' => [
                 'TABLE_TYPE' => 'BASE TABLE',
@@ -90,22 +90,7 @@ class UserMigration_100 extends Migration
      */
     public function up(): void
     {
-        $this->getConnection()->insert(
-            'user',
-            [
-                'Admin',
-                \App\Core\Helpers\env('PASSWORD_USERNAME', 'PASSWORD_USERNAME'),
-                password_hash(
-                    \App\Core\Helpers\env('PASSWORD_DEFAULT', 'PASSWORD_DEFAULT'),
-                    PASSWORD_DEFAULT
-                )
-            ],
-            [
-                'name',
-                'email',
-                'password',
-            ]
-        );
+
     }
 
     /**

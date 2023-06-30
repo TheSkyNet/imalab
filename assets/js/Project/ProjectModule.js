@@ -1,5 +1,6 @@
 const extractColors = require("extract-colors").default;
 const showdown = require('showdown')
+const {loading} = require("../components/loading");
 let Project = {
     list: [],
     current: {
@@ -31,6 +32,9 @@ let Project = {
 };
 
 let ProjectOne = {
+    onremove: function (vnode) {
+        ProjectOne.loading = true;
+    },
     loading: true,
     color: '#fff',
     oninit: function (vnode) {
@@ -38,9 +42,19 @@ let ProjectOne = {
             ProjectOne.loading = false;
         })
     },
+    updateColler: () => {
+        extractColors(Project.current.img)
+            .then((colors) => {
+                colors.sort((a, b) => b.area - a.area);
+
+                ProjectOne.color = colors[0]?.hex;
+                m.redraw()
+            })
+            .catch(console.error)
+    },
     view: function () {
         if (ProjectOne.loading) {
-            return 'loading'
+            return loading()
 
         }
         const converter = new showdown.Converter();
@@ -55,16 +69,8 @@ let ProjectOne = {
                                         id: 'thing_img',
                                         class: "img-fluid",
                                         src: Project.current.img,
-                                        oncreate: (vnode) => {
-                                            extractColors(Project.current.img)
-                                                .then((r) => {
-                                                    ProjectOne.color = r[1]?.hex;
-                                                    m.redraw()
-                                                })
-                                                .catch(console.error)
-
-
-                                        }
+                                        oncreate: ProjectOne.updateColler,
+                                        onupdate: ProjectOne.updateColler
                                     }
                                 ),
                                 m('.grid-item-slug .slug-' + Project.current.type.trim(), Project.current.type.trim())

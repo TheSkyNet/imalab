@@ -96,7 +96,7 @@ function projectView(project) {
 
 function packageView(packages) {
     return m(".card", [
-        m(m.route.Link, {class: "card", href: 'https://packagist.org/packages/' + packages.link}, [
+        m('a', {class: "card", href: 'https://packagist.org/packages/' + packages.link.trim()}, [
                 m('.packages-item-title', packages.name),
                 m('.packages-item-slug', m('pre', {class: 'pre'}, packages.slug.trim())),
                 m('.grid-item-slug .slug-' + packages.lang.trim(), packages.lang.trim())
@@ -112,5 +112,5 @@ function shuffleArray(array) {
     }
 }
 
-module.exports = {AllList, All}
+module.exports = {AllList, All, packageView , projectView, codeView, postView}
 

@@ -10,17 +10,16 @@ use Phalcon\Mvc\Url as UrlResolver;
 
 include "../vendor/autoload.php";
 define('APP_PATH', realpath('../IamLab'));
+define('ROOT_PATH', realpath('../'));
 if (!file_exists(__DIR__ . '/' . $_SERVER['REQUEST_URI'])) {
     $_GET['_url'] = $_SERVER['REQUEST_URI'];
 }
-\App\Core\Helpers\loadEnv('.env');
+
 
 $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
-
-
-\App\Core\Helpers\loadEnv('.env');
+\App\Core\Helpers\loadEnv(ROOT_PATH.'/.env');
 
 if (\App\Core\Helpers\env('APP_DEBUG') == 'debug') {
     ini_set('display_errors', 1);

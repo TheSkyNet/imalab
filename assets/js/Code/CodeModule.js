@@ -1,3 +1,4 @@
+const {codeView} = require("../All/AllModule");
 var Code = {
     list: [],
     current: [],
@@ -25,25 +26,14 @@ var Code = {
 var CodeList = {
     oninit: Code.loadList(),
     view: function () {
-
-        return m(".row", Code.list.map(function (code) {
-            return m(".grid-item col-xs-12 col-sm-6 col-md-4 col-lg-3", [
-                m('a', {class: "card", href: '/#!/' + code.type + '/' + code.id}, [
-                        m('div', {class: "card-img-top"},
-                            m(
-                                'img', {class: "img-fluid", src: code.img}
-                            )
-                        ),
-                        m('.grid-item-title', code.title)
-                    ]
-                )
-            ])
+        return m(".card-columns", Code.list.map(function (project) {
+            return codeView(project)
         }))
     }
 };
 
 var CodeOne = {
-    loading:true,
+    loading: true,
     oninit: function (vnode) {
         Code.load(vnode.attrs.id).then(() => {
             CodeOne.loading = false
