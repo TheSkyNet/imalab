@@ -13,7 +13,6 @@ use function App\Core\Helpers\config;
 class FilepondApi extends aAPI
 {
 
-
     public function process()
     {
         $this->filepond;
@@ -26,10 +25,10 @@ class FilepondApi extends aAPI
 
         $validator = $this->filepond->validator($this->request, config('filepond')['validation_rules']);
 
-        //if ($validator->fails()) {
-        //     $this->dispatchError($validator->errors());
-        //}
-//
+//         if ($validator->fails()) {
+//              $this->dispatchError($validator->errors());
+//         }
+
         $this->response->setContentType('text/plain');
         $this->response->setContent($this->filepond->store($this->request));
         return $this->response;

@@ -161,21 +161,49 @@ class API extends aAPI
      * @throws FilesystemException
      * @throws SodiumException
      */
-    public function saveFilesAction(): void
+    public function saveFilesAction()
     {
-        $project = $this->file->listContents('', true);
+ 
+        try {
+            $project = $this->file->listContents('', true);
 
-        $id = json_decode(decrypt($this->getParam('file')), false);
+            // Ensure the input is properly formatted
+            $encryptedData = $this->getParam('file');
+            if (empty($encryptedData)) {
+                throw new \InvalidArgumentException('Empty file parameter');
+            }
 
-        $faile = Filepond::findFirst($id->id);
+            // Safely decode and decrypt
+            $decryptedData = decrypt($encryptedData);
+            if ($decryptedData === false) {
+                throw new \RuntimeException('Failed to decrypt file data');
+            }
 
-        moveTo('fs', $faile->filepath . '/' . $faile->filename, FILE_PATH . '/' . $faile->filename);
+            $fileData = json_decode($decryptedData, true, 512, JSON_THROW_ON_ERROR);
+            if (json_last_error() !== JSON_ERROR_NONE || !isset($fileData['id'])) {
+                throw new \RuntimeException('Invalid file data format');
+            }
 
-        $faile->filepath = FILE_PATH;
+            $file = Filepond::findFirst($fileData['id']);
+            if (!$file) {
+                throw new \RuntimeException('File not found');
+            }
 
-        $faile->save();
+            // Move the file
+            moveTo('fs', $file->filepath . '/' . $file->filename, FILE_PATH . '/' . $file->filename);
 
-        $this->dispatch($project);
+            // Update file path
+            $file->filepath = FILE_PATH;
+            $file->save();
+
+            $this->dispatch($project);
+        } catch (\Exception $e) {
+            // Handle the error appropriately
+            $this->dispatch([
+                'error' => true,
+                'message' => 'Failed to save file: ' . $e->getMessage()
+            ]);
+        }
     }
 
     public function deletePostsAction(int $id)
