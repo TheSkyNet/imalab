@@ -1,4 +1,6 @@
 const EasyMDE = require("easymde");
+const Loading = require("../components/Loading");
+const {MessageDisplay} = require("../components/MessageDisplay");
 
 var AdminProject = {
     list: [],
@@ -25,7 +27,7 @@ var AdminProject = {
                 url: "/api/v1/project/" + id,
                 withCredentials: true,
             }
-        ).then(function (result) {
+        ).then(function () {
             AdminProject.loadList()
         })
     },
@@ -41,35 +43,77 @@ var AdminProject = {
         })
     },
     addProject() {
+        if (!this.validateProject()) {
+            return;
+        }
+
         return m.request({
-                method: "POST",
-                url: "/api/v1/project",
-                headers: {
-                    'X-CSRF-Token': this.CSRF,
-                    'Accept': `application/json`
-                },
-                withCredentials: true,
-                body: AdminProject.project,
-            }
-        ).then(function (result) {
-            AdminProject.loadList()
+            method: "POST",
+            url: "/api/v1/project",
+            headers: {
+                'X-CSRF-Token': this.CSRF,
+                'Accept': `application/json`
+            },
+            withCredentials: true,
+            body: AdminProject.project,
         })
+            .then(function() {
+                MessageDisplay.setMessage("Project created successfully!", "success");
+                AdminProject.loadList();
+                AdminProject.clearForm();
+            })
+            .catch(function(error) {
+                MessageDisplay.setMessage(error.message || "Failed to create project", "error");
+            });
     },
+
     updateProject(id) {
+        if (!this.validateProject()) {
+            return;
+        }
+
         return m.request({
-                method: "PUT",
-                url: "/api/v1/project/" + id,
-                headers: {
-                    'X-CSRF-Token': this.CSRF,
-                    'Accept': `application/json`
-                },
-                withCredentials: true,
-                body: AdminProject.project,
-            }
-        ).then(function (result) {
-            AdminProject.loadList()
+            method: "PUT",
+            url: "/api/v1/project/" + id,
+            headers: {
+                'X-CSRF-Token': this.CSRF,
+                'Accept': `application/json`
+            },
+            withCredentials: true,
+            body: AdminProject.project,
         })
+            .then(function() {
+                MessageDisplay.setMessage("Project updated successfully!", "success");
+                AdminProject.loadList();
+            })
+            .catch(function(error) {
+                MessageDisplay.setMessage(error.message || "Failed to update project", "error");
+            });
+    },
+
+    validateProject() {
+        if (!AdminProject.project.title.trim()) {
+            MessageDisplay.setMessage("Title is required", "error");
+            return false;
+        }
+        if (!AdminProject.project.body.trim()) {
+            MessageDisplay.setMessage("Content is required", "error");
+            return false;
+        }
+        return true;
+    },
+
+    clearForm() {
+        AdminProject.project = {
+            title: '',
+            img: '',
+            body: ''
+        };
+        if (AdminProjectList.easyMDE) {
+            AdminProjectList.easyMDE.value('');
+        }
     }
+
 };
 
 var AdminProjectList = {
@@ -84,165 +128,165 @@ var AdminProjectList = {
         AdminProject.loadList().then(() => {
             AdminProjectList.loading = false
         })
-
     },
-    view: function (vnode) {
-        console.log(AdminProjectList.loading);
+    view: function(vnode) {
         if (AdminProjectList.loading) {
-
-            return m('div', 'loading');
+            return m(Loading);
         }
-        return m("div", {"class": "row"},
-            [
-                m('div', {class: 'col-12'}, m("h1",
-                    "Projects"
-                )),
-                m("div", {class: 'col-6'},
-                    m("div", {"class": "form"},
+        return [
+            m(MessageDisplay),  // Add MessageDisplay at the top
+            m("div.project-page", {
+                style: {
+                    background: '#fff',
+                    borderRadius: '4px',
+                    padding: '0.25rem'
+                }
+            }, [
+                // Header
+                m("div.header", {
+                    style: {
+                        display: 'flex',
+                        alignItems: 'center'
+                    }
+                }, [
+                    m("h1", {
+                        style: {
+                            color: '#8198c4',
+                            fontSize: '2rem'
+                        }
+                    }, [
+                        m("i.octicon.octicon-project"),
+                        "Projects"
+                    ])
+                ]),
+
+                // Content
+                m("div.row", {
+                    style: { width: '100%' }
+                }, [
+                    // Form
+                    m("div.col-6",
                         m("form", {
-                                onsubmit: (e) => {
-                                    event.preventDefault();
-
-                                    if (vnode.attrs.id) {
-                                        AdminProject.updateProject(vnode.attrs.id)
-                                    } else {
-                                        AdminProject.addProject()
-                                    }
-
-                                }
+                            onsubmit: (e) => {
+                                e.preventDefault();
+                                vnode.attrs.id ?
+                                    AdminProject.updateProject(vnode.attrs.id) :
+                                    AdminProject.addProject();
                             },
-                            m("div", {"class": "input-group mb-3"},
-                                [
-                                    m("input", {
-                                        "class": "form-control form-control-lg",
-                                        "type": "text",
-                                        value: AdminProject.project.title,
-                                        onchange: (e) => {
-                                            AdminProject.project.title = e.target.value;
-                                        },
-                                        "placeholder": "title"
-                                    }), m("div", {"class": "input-group-append"},
-                                    m("span", {"class": "input-group-text", "id": "basic-addon2"},
-                                        "Name"
-                                    )
-                                )
-                                ]
-                            ),
+                            style: {
+                                background: '#f8fafc',
+                                borderRadius: '4px',
+                                border: '1px solid rgba(129, 152, 196, 0.2)',
+                                padding: '0.25rem'
+                            }
+                        }, [
+                            m("input.form-control", {
+                                style: {
+                                    border: '1px solid #8198c4',
+                                    borderRadius: '4px'
+                                },
+                                value: AdminProject.project.title,
+                                onchange: (e) => AdminProject.project.title = e.target.value,
+                                placeholder: "Title"
+                            }),
 
-                            m("div", {"class": "input-group mb-3"},
-                                [
-                                    m("input", {
-                                        "class": "form-control form-control-lg",
-                                        "type": "text",
-                                        "placeholder": "img",
-                                        value: AdminProject.project.img,
-                                        onchange: (e) => {
-                                            AdminProject.project.img = e.target.value;
-                                        },
-                                    }), m("div", {"class": "input-group-append"},
-                                    m("span", {"class": "input-group-text", "id": "basic-addon2"},
-                                        "Img"
-                                    )
-                                )
-                                ]
-                            ),
-                            m("div", {"class": "form-group"},
-                                [
-                                    m("label", {"for": "exampleFormControlTextarea1"},
-                                        "Example textarea"
-                                    ),
-                                    m('textarea', {
-                                        oncreate: function (vnode) {
-                                            AdminProjectList.easyMDE = new EasyMDE({
-                                                element: vnode.dom
-                                            });
-                                            console.log(AdminProject);
-                                            AdminProjectList.easyMDE.value(AdminProject.project.body)
-                                            AdminProjectList.easyMDE.codemirror.on("change", () => {
-                                                AdminProject.project.body = AdminProjectList.easyMDE.value()
-                                            });
-                                        },
+                            m("input.form-control", {
+                                style: {
+                                    border: '1px solid #8198c4',
+                                    borderRadius: '4px',
+                                    marginTop: '0.25rem'
+                                },
+                                value: AdminProject.project.img,
+                                onchange: (e) => AdminProject.project.img = e.target.value,
+                                placeholder: "Image URL"
+                            }),
 
-                                    }, AdminProject.project.body)
+                            m("textarea", {
+                                style: { marginTop: '0.25rem' },
+                                oncreate: (vnode) => {
+                                    AdminProjectList.easyMDE = new EasyMDE({
+                                        element: vnode.dom,
+                                        spellChecker: false
+                                    });
+                                    AdminProjectList.easyMDE.value(AdminProject.project.body);
+                                    AdminProjectList.easyMDE.codemirror.on("change", () => {
+                                        AdminProject.project.body = AdminProjectList.easyMDE.value();
+                                    });
+                                }
+                            }),
 
-                                ]
-                            ),
-                            m("button", {"class": "btn btn-primary btn-lg btn-block", "type": "submit"},
-                                "save"
-                            )
-                        )
+                            m("button.btn", {
+                                type: "submit",
+                                style: {
+                                    background: '#8198c4',
+                                    color: '#fff',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    width: '100%',
+                                    marginTop: '0.25rem'
+                                }
+                            }, [
+                                m("i.octicon.octicon-check"),
+                                vnode.attrs.id ? " Update" : " Create"
+                            ])
+                        ])
                     ),
-                ),
-                m("div", {class: 'col-6'},
 
-                    m("div", {"class": "container"},
-                        m("div", {"class": "row"},
-                            m("div", {"class": "col-12"},
-                                m("table", {"class": "table table-bordered"},
-                                    [
-                                        m("thead",
-                                            m("tr",
-                                                [
-
-                                                    m("th", {"scope": "col"},
-                                                        "Article Name"
-                                                    ),
-                                                    m("th", {"scope": "col"},
-                                                        "Actions"
-                                                    )
-                                                ]
-                                            )
-                                        ),
-                                        m("tbody",
-                                            AdminProject.list.map((project) => {
-                                                return m("tr",
-                                                    [
-
-                                                        m("td",
-                                                            project.title
-                                                        ),
-                                                        m("td",
-                                                            [
-
-                                                                m(m.route.Link, {
-                                                                        href: `/project/${project.id}`,
-                                                                        class: "btn btn-primary",
-                                                                        options: {replace: true},
-                                                                    },
-                                                                    m("i", {"class": "octicon octicon-pencil "})
-                                                                ),
-                                                                m("button", {
-                                                                        "class": "btn btn-danger",
-                                                                        "type": "button",
-                                                                        onclick: () => {
-
-                                                                            if (confirm("Are You Sure") === true) {
-                                                                                AdminProject.delete(project.id)
-                                                                            }
-
-
-                                                                        }
-                                                                    },
-                                                                    m.trust('&#128465;')
-                                                                )
-                                                            ]
-                                                        )
-                                                    ]
-                                                )
-                                            })
-                                        )
-                                    ]
+                    // Projects List
+                    m("div.col-6", {
+                            style: { padding: '0.25rem' }
+                        },
+                        m("div.table-responsive",
+                            m("table.table", {
+                                style: {
+                                    background: '#fff',
+                                    borderRadius: '4px',
+                                    border: '1px solid rgba(129, 152, 196, 0.2)'
+                                }
+                            }, [
+                                m("thead",
+                                    m("tr", [
+                                        m("th", "Name"),
+                                        m("th", "Actions")
+                                    ])
+                                ),
+                                m("tbody",
+                                    AdminProject.list.map(project =>
+                                        m("tr", [
+                                            m("td", project.title),
+                                            m("td", [
+                                                m(m.route.Link, {
+                                                    href: `/project/${project.id}`,
+                                                    class: "btn",
+                                                    style: {
+                                                        background: '#8198c4',
+                                                        color: '#fff',
+                                                        borderRadius: '4px',
+                                                        marginRight: '0.25rem'
+                                                    }
+                                                }, m("i.octicon.octicon-pencil")),
+                                                m("button.btn", {
+                                                    onclick: () => {
+                                                        if (confirm("Delete?")) AdminProject.delete(project.id);
+                                                    },
+                                                    style: {
+                                                        background: '#ff6b6b',
+                                                        color: '#fff',
+                                                        borderRadius: '4px'
+                                                    }
+                                                }, m("i.octicon.octicon-trashcan"))
+                                            ])
+                                        ])
+                                    )
                                 )
-                            )
+                            ])
                         )
                     )
-                ),
+                ])
+            ])
+        ];
+    }
 
-            ]
-        );
-
-
-    },
 
 };
 
