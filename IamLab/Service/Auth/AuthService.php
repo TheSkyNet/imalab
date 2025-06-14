@@ -29,11 +29,9 @@ class AuthService extends aAPI
   public function getUser()
   {
     $identity = $this->getIdentity();
-    $user = User::findFirstById(
-        $identity['id']
-    );
-
-    return $user;
+      return User::findFirstById(
+          $identity['id']
+      );
   }
 
   public function authenticate(User $user, $authMethod = "post")

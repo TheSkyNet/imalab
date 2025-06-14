@@ -30,7 +30,7 @@ fi
 
 # Function that prints the available commands...
 function display_help {
-    echo "Laravel Phalcon"
+    echo "Phalcon"
     echo
     echo "${YELLOW}Usage:${NC}" >&2
     echo "  phalcons COMMAND [options] [arguments]"
@@ -43,6 +43,7 @@ function display_help {
     echo "  ${GREEN}phalcons stop${NC}      Stop the application"
     echo "  ${GREEN}phalcons restart${NC}   Restart the application"
     echo "  ${GREEN}phalcons ps${NC}        Display the status of all containers"
+    echo "  ${GREEN}phalcons build --no-cache${NC}       Rebuild all of the Phalcon containers"
     echo
     echo "${YELLOW}Phalcon Commands:${NC}"
     echo "  ${GREEN}phalcons phalcon ...${NC}          Run an Phalcon command"
@@ -56,24 +57,17 @@ function display_help {
     echo "  ${GREEN}phalcons composer ...${NC}                       Run a Composer command"
     echo "  ${GREEN}phalcons composer require laravel/sanctum${NC}"
     echo
-    echo "${YELLOW}Node Commands:${NC}"
-    echo "  ${GREEN}phalcons node ...${NC}         Run a Node command"
-    echo "  ${GREEN}phalcons node --version${NC}"
     echo
     echo "${YELLOW}NPM Commands:${NC}"
     echo "  ${GREEN}phalcons npm ...${NC}        Run a npm command"
-    echo "  ${GREEN}phalcons npx${NC}            Run a npx command"
     echo "  ${GREEN}phalcons npm run prod${NC}"
     echo
-    echo "${YELLOW}Yarn Commands:${NC}"
-    echo "  ${GREEN}phalcons yarn ...${NC}        Run a Yarn command"
-    echo "  ${GREEN}phalcons yarn run prod${NC}"
     echo
     echo "${YELLOW}Database Commands:${NC}"
-    echo "  ${GREEN}phalcons mysql${NC}     Start a MySQL CLI session within the 'mysql' container"
-    echo "  ${GREEN}phalcons mariadb${NC}   Start a MySQL CLI session within the 'mariadb' container"
-    echo "  ${GREEN}phalcons psql${NC}      Start a PostgreSQL CLI session within the 'pgsql' container"
-    echo "  ${GREEN}phalcons redis${NC}     Start a Redis CLI session within the 'redis' container"
+    echo "  ${GREEN}phalcons mysql${NC}             Start a MySQL CLI session within the 'mysql' container"
+    echo "  ${GREEN}phalcons migrate${NC}           Run database migrations"
+    echo "  ${GREEN}phalcons migrate:generate${NC}  Generate database migrations"
+    echo "  ${GREEN}phalcons migrate:list${NC}      List all migrations"
     echo
     echo "${YELLOW}Debugging:${NC}"
     echo "  ${GREEN}phalcons debug ...${NC}          Run an Phalcon command in debug mode"
@@ -81,11 +75,6 @@ function display_help {
     echo
     echo "${YELLOW}Running Tests:${NC}"
     echo "  ${GREEN}phalcons test${NC}          Run the PHPUnit tests via the Phalcon test command"
-    echo "  ${GREEN}phalcons phpunit ...${NC}   Run PHPUnit"
-    echo "  ${GREEN}phalcons pest ...${NC}      Run Pest"
-    echo "  ${GREEN}phalcons pint ...${NC}      Run Pint"
-    echo "  ${GREEN}phalcons dusk${NC}          Run the Dusk tests (Requires the laravel/dusk package)"
-    echo "  ${GREEN}phalcons dusk:fails${NC}    Re-run previously failed Dusk tests (Requires the laravel/dusk package)"
     echo
     echo "${YELLOW}Container CLI:${NC}"
     echo "  ${GREEN}phalcons shell${NC}        Start a shell session within the application container"
@@ -100,10 +89,6 @@ function display_help {
     echo "${YELLOW}Binaries:${NC}"
     echo "  ${GREEN}phalcons bin ...${NC}   Run Composer binary scripts from the vendor/bin directory"
     echo
-    echo "${YELLOW}Customization:${NC}"
-    echo "  ${GREEN}phalcons phalcon phalcons:publish${NC}   Publish the Phalcon configuration files"
-    echo "  ${GREEN}phalcons build --no-cache${NC}       Rebuild all of the Phalcon containers"
-
     exit 1
 }
 
@@ -277,70 +262,6 @@ elif [ "$1" == "test" ]; then
         phalcons_is_not_running
     fi
 
-# Proxy the "phpunit" command to "php vendor/bin/phpunit"...
-elif [ "$1" == "phpunit" ]; then
-    shift 1
-
-    if [ "$EXEC" == "yes" ]; then
-        ARGS+=(exec -u phalcons)
-        [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" php vendor/bin/phpunit "$@")
-    else
-        phalcons_is_not_running
-    fi
-
-# Proxy the "pest" command to "php vendor/bin/pest"...
-elif [ "$1" == "pest" ]; then
-    shift 1
-
-    if [ "$EXEC" == "yes" ]; then
-        ARGS+=(exec -u phalcons)
-        [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" php vendor/bin/pest "$@")
-    else
-        phalcons_is_not_running
-    fi
-
-# Proxy the "pint" command to "php vendor/bin/pint"...
-elif [ "$1" == "pint" ]; then
-    shift 1
-
-    if [ "$EXEC" == "yes" ]; then
-        ARGS+=(exec -u phalcons)
-        [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" php vendor/bin/pint "$@")
-    else
-        phalcons_is_not_running
-    fi
-
-# Proxy the "dusk" command to the "phalcon dusk" Phalcon command...
-elif [ "$1" == "dusk" ]; then
-    shift 1
-
-    if [ "$EXEC" == "yes" ]; then
-        ARGS+=(exec -u phalcons)
-        [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=(-e "APP_URL=http://${APP_SERVICE}")
-        ARGS+=(-e "DUSK_DRIVER_URL=http://selenium:4444/wd/hub")
-        ARGS+=("$APP_SERVICE" phalcon dusk "$@")
-    else
-        phalcons_is_not_running
-    fi
-
-# Proxy the "dusk:fails" command to the "phalcon dusk:fails" Phalcon command...
-elif [ "$1" == "dusk:fails" ]; then
-    shift 1
-
-    if [ "$EXEC" == "yes" ]; then
-        ARGS+=(exec -u phalcons)
-        [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=(-e "APP_URL=http://${APP_SERVICE}")
-        ARGS+=(-e "DUSK_DRIVER_URL=http://selenium:4444/wd/hub")
-        ARGS+=("$APP_SERVICE" phalcon dusk:fails "$@")
-    else
-        phalcons_is_not_running
-    fi
-
 # Initiate a Laravel Tinker session within the application container...
 elif [ "$1" == "tinker" ] ; then
     shift 1
@@ -389,17 +310,6 @@ elif [ "$1" == "npx" ]; then
         phalcons_is_not_running
     fi
 
-# Proxy YARN commands to the "yarn" binary on the application container...
-elif [ "$1" == "yarn" ]; then
-    shift 1
-
-    if [ "$EXEC" == "yes" ]; then
-        ARGS+=(exec -u phalcons)
-        [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=("$APP_SERVICE" yarn "$@")
-    else
-        phalcons_is_not_running
-    fi
 
 # Initiate a MySQL CLI terminal session within the "mysql" container...
 elif [ "$1" == "mysql" ]; then
@@ -414,31 +324,6 @@ elif [ "$1" == "mysql" ]; then
         phalcons_is_not_running
     fi
 
-# Initiate a MySQL CLI terminal session within the "mariadb" container...
-elif [ "$1" == "mariadb" ]; then
-    shift 1
-
-    if [ "$EXEC" == "yes" ]; then
-        ARGS+=(exec)
-        [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=(mariadb bash -c)
-        ARGS+=("MYSQL_PWD=\${MYSQL_PASSWORD} mysql -u \${MYSQL_USER} \${MYSQL_DATABASE}")
-    else
-        phalcons_is_not_running
-    fi
-
-# Initiate a PostgreSQL CLI terminal session within the "pgsql" container...
-elif [ "$1" == "psql" ]; then
-    shift 1
-
-    if [ "$EXEC" == "yes" ]; then
-        ARGS+=(exec)
-        [ ! -t 0 ] && ARGS+=(-T)
-        ARGS+=(pgsql bash -c)
-        ARGS+=("PGPASSWORD=\${PGPASSWORD} psql -U \${POSTGRES_USER} \${POSTGRES_DB}")
-    else
-        phalcons_is_not_running
-    fi
 
 # Initiate a Bash shell within the application container...
 elif [ "$1" == "shell" ] || [ "$1" == "bash" ]; then
@@ -475,21 +360,44 @@ elif [ "$1" == "redis" ] ; then
     else
         phalcons_is_not_running
     fi
-
-# Share the site...
-elif [ "$1" == "share" ]; then
+# Proxy migration commands to phalcon-migrations
+elif [ "$1" == "migrate" ]; then
     shift 1
 
     if [ "$EXEC" == "yes" ]; then
-        docker run --init --rm -p "$SAIL_SHARE_DASHBOARD":4040 -t beyondcodegmbh/expose-server:latest share http://host.docker.internal:"$APP_PORT" \
-            --server-host="$SAIL_SHARE_SERVER_HOST" \
-            --server-port="$SAIL_SHARE_SERVER_PORT" \
-            --auth="$SAIL_SHARE_TOKEN" \
-            --subdomain="$SAIL_SHARE_SUBDOMAIN" \
-            --domain="$SAIL_SHARE_DOMAIN" \
-            "$@"
+        ARGS+=(exec -u phalcons)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" ./vendor/bin/phalcon-migrations run --config=migrations.php)
+    else
+        phalcons_is_not_running
+    fi
 
-        exit
+# Generate migrations
+elif [ "$1" == "migrate:generate" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -u phalcons)
+        [ ! -t 0 ] && ARGS+=(-T)
+        if [ $# -gt 0 ]; then
+            # If there are additional arguments, pass them through
+            ARGS+=("$APP_SERVICE" ./vendor/bin/phalcon-migrations generate --config=migrations.php "$@")
+        else
+            # If no additional arguments, run basic generate
+            ARGS+=("$APP_SERVICE" ./vendor/bin/phalcon-migrations generate --config=migrations.php)
+        fi
+    else
+        phalcons_is_not_running
+    fi
+
+# List migrations
+elif [ "$1" == "migrate:list" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -u phalcons)
+        [ ! -t 0 ] && ARGS+=(-T)
+        ARGS+=("$APP_SERVICE" ./vendor/bin/phalcon-migrations list --config=migrations.php)
     else
         phalcons_is_not_running
     fi

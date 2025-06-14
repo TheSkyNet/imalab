@@ -48,13 +48,10 @@ services:
         networks:
             - phalcons
         healthcheck:
-            test:
-                - CMD
-                - mysqladmin
-                - ping
-                - '-p${DB_PASSWORD}'
-            retries: 3
+            test: ["CMD", "mysql", "--user=${DB_USERNAME}", "--password=${DB_PASSWORD}", "-e", "SELECT 1;"]
+            interval: 5s
             timeout: 5s
+            retries: 3
     redis:
         image: 'redis:alpine'
         ports:

@@ -1,6 +1,6 @@
 <?php
 defined('APP_PATH') || define('APP_PATH', realpath('./IamLab'));
-use Phalcon\Config\Config;
+use \Phalcon\Config\Config;
 
 return new Config([
     'database' => [
