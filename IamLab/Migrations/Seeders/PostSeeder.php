@@ -1,8 +1,10 @@
 <?php
 
+namespace IamLab\Migrations\Seeders;
+use IamLab\Model\Post;
 use Phalcon\Db\Exception;
 use Phalcon\Migrations\Mvc\Model\Migration;
-use IamLab\Model\Post;
+
 
 class PostSeeder extends Migration
 {

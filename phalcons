@@ -401,6 +401,23 @@ elif [ "$1" == "migrate:list" ]; then
     else
         phalcons_is_not_running
     fi
+# Run database seeders
+elif [ "$1" == "migrate:seed" ]; then
+    shift 1
+
+    if [ "$EXEC" == "yes" ]; then
+        ARGS+=(exec -u www-data)
+        [ ! -t 0 ] && ARGS+=(-T)
+
+        # Pass all additional arguments to the seeder
+        if [ $# -gt 0 ]; then
+            ARGS+=("$APP_SERVICE" php bin/seeder.php "$@")
+        else
+            ARGS+=("$APP_SERVICE" php bin/seeder.php)
+        fi
+    else
+        phalcons_is_not_running
+    fi
 
 # Pass unknown commands to the "docker-compose" binary...
 else

@@ -64,7 +64,7 @@ class PackageMigration_100 extends Migration
                     [
                         'type' => Column::TYPE_VARCHAR,
                         'notNull' => true,
-                        'size' => 50,
+                        'size' => 500,
                         'after' => 'lang'
                     ]
                 ),

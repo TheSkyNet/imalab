@@ -13,26 +13,23 @@ const Login = {
             withCredentials: true,
             body: Login.user,
         }).then(function(result) {
-            if (result.error) {
-                // Handle API-level errors
-                MessageDisplay.setMessage(result.error, 'error');
+            if (!result.success) {
+                MessageDisplay.setMessage(result.message, 'error');
                 return;
             }
-            Object.assign(Auth, result);
-            MessageDisplay.setMessage('Login successful! Redirecting...', 'success');
+
+            Object.assign(Auth, result.data);
+            MessageDisplay.setMessage(result.message, 'success');
             setTimeout(() => {
                 window.location.reload();
-            }, 1000);
+            }, 1500);
         }).catch(error => {
-            // Handle network/request errorsk
-            let errorMessage = 'Login failed. Please try again.';
+            let errorMessage = 'Unable to connect to the server. Please try again later.';
 
-            if (error.code === 401) {
-                errorMessage = 'Invalid email or password.';
+            if (error.response && error.response.message) {
+                errorMessage = error.response.message;
             } else if (error.code === 429) {
                 errorMessage = 'Too many attempts. Please try again later.';
-            } else if (error.response && error.response.message) {
-                errorMessage = error.response.message;
             }
 
             MessageDisplay.setMessage(errorMessage, 'error');
@@ -40,6 +37,7 @@ const Login = {
         });
     }
 };
+
 
 
 const Auth = {};

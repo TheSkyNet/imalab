@@ -13,30 +13,47 @@ class Auth extends aAPI
 
     public function authAction()
     {
-
         $email = $this->getParam('email');
         $password = $this->getParam('password');
 
-
-        $auth = (new AuthService())
-            ->authenticate(
-                (new User())
-                    ->setEmail(
-                        $email
-                    )
-                    ->setPassword(
-                        $password
-                    )
-            );
-
-
-        if ($auth) {
-            // $this->response->redirect("/admin")->send();
-            $this->dispatch($auth);
+        // Validate input
+        if (empty($email) || empty($password)) {
+            $this->dispatch([
+                'success' => false,
+                'message' => 'Email and password are required'
+            ]);
+            return;
         }
-        //$this->response->redirect("/auth")->send();
-        $this->dispatch(false);
 
+        try {
+            $auth = (new AuthService())
+                ->authenticate(
+                    (new User())
+                        ->setEmail($email)
+                        ->setPassword($password)
+                );
+
+            if ($auth) {
+                $this->dispatch([
+                    'success' => true,
+                    'message' => 'Login successful',
+                    'data' => $auth
+                ]);
+                return;
+            }
+
+            $this->dispatch([
+                'success' => false,
+                'message' => 'Invalid email or password'
+            ]);
+
+        } catch (\Exception $e) {
+            $this->dispatch([
+                'success' => false,
+                'message' => 'An error occurred during authentication',
+                'debug' => $e->getMessage() // Only include in development
+            ]);
+        }
     }
 
     public function userAction()
