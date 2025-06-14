@@ -8,6 +8,7 @@ use IamLab\Model\User;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Loader;
 use Phalcon\Mvc\Micro;
+use function App\Core\Helpers\loadEnv;
 
 // Set paths
 define('APP_PATH', realpath(__DIR__ . '/../IamLab'));
@@ -17,7 +18,7 @@ define('ROOT_PATH', realpath(__DIR__ . '/..'));
 require_once ROOT_PATH . '/vendor/autoload.php';
 
 // Load environment variables
-\App\Core\Helpers\loadEnv(ROOT_PATH.'/.env');
+loadEnv(ROOT_PATH.'/.env');
 
 // Set error reporting based on environment
 if (\App\Core\Helpers\env('APP_DEBUG') == 'debug') {

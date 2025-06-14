@@ -5,9 +5,12 @@ namespace IamLab\Service\Filepond;
 use Carbon\Carbon;
 use ErrorException;
 use IamLab\Model\Filepond;
+use Illuminate\Contracts\Validation\Validator;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use Phalcon\Http\Request;
+use SodiumException;
+use Throwable;
 use function App\Core\Helpers\collect;
 use function App\Core\Helpers\config;
 use function App\Core\Helpers\dd;
@@ -47,7 +50,7 @@ class FilepondService
      *
      * @param Request $request
      * @param array $rules
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return Validator
      */
     public function validator(Request $request, array $rules)
     {
@@ -71,7 +74,7 @@ class FilepondService
             $file->moveTo(TMP_DISK . '/' . $name);
         }catch ( ErrorException $exception){
             dd($exception);
-        };
+        }
         $filepond = (new Filepond)->assign([
             'filepath' => $this->tempDisk,
             'filename' => $name, // $file->getOriginalName(),
@@ -104,7 +107,7 @@ class FilepondService
      * Initialize and make a slot for chunk upload
      *
      * @return string
-     * @throws \SodiumException
+     * @throws SodiumException
      * @throws FilesystemException
      */
     public function initChunk()
@@ -135,11 +138,11 @@ class FilepondService
      *
      * @param Request $request
      * @return string
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function chunk(Request $request)
     {
-        $id = \App\Core\Helpers\decrypt(
+        $id = decrypt(
             json_decode($request->getPatch())['id']
         );
         // $id = Crypt::decrypt($request->patch)['id'];

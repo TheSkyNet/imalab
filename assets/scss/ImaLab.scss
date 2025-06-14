@@ -442,7 +442,6 @@ $lines-to-show: 3;
         margin-right: auto;
         padding-top: 4rem;
         padding-bottom: 6rem;
-
       }
     }
 
@@ -468,7 +467,6 @@ $lines-to-show: 3;
         height: 10px;
         bottom: -7px;
         right: 0;
-
       }
     }
 
@@ -488,14 +486,12 @@ $lines-to-show: 3;
 
       .post-section {
         padding: 1rem;
-
       }
 
       @media screen and (max-width: 770px) {
         max-width: 100%;
       }
     }
-
   }
 
   @media screen and (max-width: 600px) {

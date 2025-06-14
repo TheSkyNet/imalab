@@ -201,7 +201,7 @@ var AdminPostList = {
                                                                             if (confirm("Are You Sure") === true) {
                                                                                 AdminPost.delete(post.id)
                                                                             }
-                                                                            return;
+
 
                                                                         }
                                                                     },

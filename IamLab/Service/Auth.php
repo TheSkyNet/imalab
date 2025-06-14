@@ -3,6 +3,7 @@
 namespace IamLab\Service;
 
 
+use Exception;
 use IamLab\Core\API\aAPI;
 use IamLab\Model\User;
 use IamLab\Service\Auth\AuthService;
@@ -47,7 +48,7 @@ class Auth extends aAPI
                 'message' => 'Invalid email or password'
             ]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->dispatch([
                 'success' => false,
                 'message' => 'An error occurred during authentication',

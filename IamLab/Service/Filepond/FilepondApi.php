@@ -1,14 +1,16 @@
 <?php
 namespace IamLab\Service\Filepond;
+use IamLab\Core\API\aAPI;
 use IamLab\Service\Filepond\FilepondService;
 use Phalcon\Http\Response;
 use Phalcon\Http\ResponseInterface;
+use Throwable;
 use function App\Core\Helpers\config;
 
 /**
  * @property FilepondService $filepond
  */
-class FilepondApi extends \IamLab\Core\API\aAPI
+class FilepondApi extends aAPI
 {
 
 
@@ -37,7 +39,7 @@ class FilepondApi extends \IamLab\Core\API\aAPI
      * FilePond ./patch route logic.
      *
      * @return Response|ResponseInterface
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function patch()
     {
@@ -54,7 +56,7 @@ class FilepondApi extends \IamLab\Core\API\aAPI
      * @param Request $request
      * @param FilepondService $service
      * @return \Illuminate\Http\Response
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function head(Request $request, FilepondService $service)
     {

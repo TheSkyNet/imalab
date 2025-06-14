@@ -219,7 +219,7 @@ var AdminProjectList = {
                                                                             if (confirm("Are You Sure") === true) {
                                                                                 AdminProject.delete(project.id)
                                                                             }
-                                                                            return;
+
 
                                                                         }
                                                                     },

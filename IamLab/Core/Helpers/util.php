@@ -2,8 +2,9 @@
 
 namespace App\Core\Helpers;
 use IamLab\Core\Env\Env;
+use Phalcon\Di\FactoryDefault;
 
-/** @var \Phalcon\Di\FactoryDefault $di */
+/** @var FactoryDefault $di */
 
 function config($key, $default = null)
 {

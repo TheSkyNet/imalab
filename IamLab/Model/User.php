@@ -27,6 +27,7 @@ class User extends Model
      * @var string
      * @Column(type="string", length=50, nullable=false)
      */
+
     protected $email;
 
     /**
@@ -66,13 +67,13 @@ class User extends Model
     }
 
     /**
-     * Method to set the value of field name
+     * Method to set the value of a field name
      *
      * @param string $name
      *
      * @return $this
      */
-    public function setName($name)
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -86,7 +87,7 @@ class User extends Model
      *
      * @return $this
      */
-    public function setEmail($email)
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
@@ -100,7 +101,7 @@ class User extends Model
      *
      * @return $this
      */
-    public function setPassword($password)
+    public function setPassword(string $password): static
     {
         $this->password = $password;
 
@@ -132,7 +133,7 @@ class User extends Model
      *
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -142,7 +143,7 @@ class User extends Model
      *
      * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }

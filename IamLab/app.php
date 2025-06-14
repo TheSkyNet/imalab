@@ -2,12 +2,13 @@
 /**
  * Local variables
  *
- * @var \Phalcon\Mvc\Micro $app
+ * @var Micro $app
  */
 use IamLab\Service\Admin;
 use IamLab\Service\API;
 use IamLab\Service\Auth;
 use IamLab\Service\Filepond\FilepondApi;
+use Phalcon\Mvc\Micro;
 
 /**
  * Add your routes here

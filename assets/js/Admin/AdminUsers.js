@@ -202,7 +202,7 @@ var AdminUserList = {
                                                                             if (confirm("Are You Sure") === true) {
                                                                                 AdminUser.delete(user.id)
                                                                             }
-                                                                            return;
+
 
                                                                         }
                                                                     },

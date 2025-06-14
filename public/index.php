@@ -6,6 +6,9 @@ use IamLab\Service\Auth\AuthService;
 use Phalcon\Http\Response;
 use Phalcon\Mvc\View\Simple;
 use Phalcon\Mvc\Url as UrlResolver;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
+use function App\Core\Helpers\loadEnv;
 
 
 include "../vendor/autoload.php";
@@ -16,10 +19,10 @@ if (!file_exists(__DIR__ . '/' . $_SERVER['REQUEST_URI'])) {
 }
 
 
-$whoops = new \Whoops\Run;
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+$whoops = new Run;
+$whoops->pushHandler(new PrettyPageHandler);
 $whoops->register();
-\App\Core\Helpers\loadEnv(ROOT_PATH.'/.env');
+loadEnv(ROOT_PATH.'/.env');
 
 if (\App\Core\Helpers\env('APP_DEBUG') == 'debug') {
     ini_set('display_errors', 1);

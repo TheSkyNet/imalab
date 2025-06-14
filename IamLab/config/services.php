@@ -1,5 +1,9 @@
 <?php
 
+use IamLab\Service\Filepond\FilepondService;
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use Phalcon\Acl\Adapter\Memory;
+use Phalcon\Autoload\Loader;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Mvc\Micro;
 use IamLab\Service\Auth\AuthService;
@@ -9,6 +13,7 @@ use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Session\Manager;
 use Phalcon\Session\Adapter\Stream;
+use function App\Core\Helpers\config;
 use function App\Core\Helpers\dd;
 
 /**
@@ -28,7 +33,7 @@ $di->setShared(
 $di->setShared(
     'loader',
     function () {
-        $loader = new \Phalcon\Autoload\Loader();
+        $loader = new Loader();
         $config = $this->getConfig();
 
 
@@ -74,13 +79,13 @@ $di->setShared(
 $di->setShared(
     'filepond',
     function () {
-        return new \IamLab\Service\Filepond\FilepondService();
+        return new FilepondService();
     }
 );
 $di->setShared(
     'file',
     function () {
-        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(FILE_PATH);
+        $adapter = new LocalFilesystemAdapter(FILE_PATH);
 
         return new League\Flysystem\Filesystem($adapter);
     }
@@ -89,14 +94,14 @@ $di->setShared(
     'tmp',
     function () {
 
-        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(TMP_DISK);
+        $adapter = new LocalFilesystemAdapter(TMP_DISK);
         return new League\Flysystem\Filesystem($adapter);
     }
 );
 $di->setShared(
     'fs',
     function () {
-        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(ROOT_DISK);
+        $adapter = new LocalFilesystemAdapter(ROOT_DISK);
         return new League\Flysystem\Filesystem($adapter);
     }
 );
@@ -107,7 +112,7 @@ $di->setShared(
 $di->setShared(
     'db',
     function () {
-        $config = \App\Core\Helpers\config('database');
+        $config = config('database');
         return new Mysql(
             [
                 'host' => $config['host'],
@@ -131,7 +136,7 @@ $di->set(
         );
 
         // Memcached connection settings
-        $cache = new \Phalcon\Acl\Adapter\Memory(
+        $cache = new Memory(
             $frontCache,
             [
                 "host" => "localhost",
@@ -168,7 +173,7 @@ $di->setShared(
     'isAuthenticated',
     function () {
         if (!(new AuthService())->isAuthenticated()) {
-            $response = new \Phalcon\Http\Response();
+            $response = new Response();
             $response->redirect('/auth');
             $response->send();
 

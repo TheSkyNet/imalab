@@ -2,9 +2,10 @@
 
 namespace IamLab\Core\API;
 
+use Phalcon\Di\Injectable;
 use function App\Core\Helpers\cast;
 
-abstract class aAPI extends \Phalcon\Di\Injectable
+abstract class aAPI extends Injectable
 {
 
     protected function runIndex(){

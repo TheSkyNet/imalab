@@ -35,7 +35,8 @@
     "roave/security-advisories": "dev-latest",
     "phalcon/devtools": "5.0.x",
     "phalcon/migrations": "3.0.x",
-    "mpyw/php-hyper-builtin-server": "^3.0"
+    "mpyw/php-hyper-builtin-server": "^3.0",
+    "phalcon/ide-stubs": "dev-master"
   },
   "repositories": [
     {

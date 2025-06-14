@@ -2,6 +2,9 @@
 
 namespace IamLab\Model;
 use IamLab\Core\API\Entity;
+use Phalcon\Mvc\Model\ResultInterface;
+use Phalcon\Mvc\Model\ResultsetInterface;
+use Phalcon\Mvc\ModelInterface;
 
 class Code extends Entity
 {
@@ -104,9 +107,9 @@ class Code extends Entity
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Code[]|Code|\Phalcon\Mvc\Model\ResultSetInterface
+     * @return Code[]|Code|ResultSetInterface
      */
-    public static function find($parameters = null): \Phalcon\Mvc\Model\ResultsetInterface
+    public static function find($parameters = null): ResultsetInterface
     {
         return parent::find($parameters);
     }
@@ -115,9 +118,9 @@ class Code extends Entity
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Code|\Phalcon\Mvc\Model\ResultInterface|\Phalcon\Mvc\ModelInterface|null
+     * @return Code|ResultInterface|ModelInterface|null
      */
-    public static function findFirst($parameters = null): ?\Phalcon\Mvc\ModelInterface
+    public static function findFirst($parameters = null): ?ModelInterface
     {
         return parent::findFirst($parameters);
     }

@@ -15,7 +15,7 @@ use SodiumException;
 function crypt(string $message): string
 {
     $key = Key::loadFromAsciiSafeString(config('app.encryption_key'));
-    $plaintext = Crypto::encrypt($message, $key);;
+    $plaintext = Crypto::encrypt($message, $key);
     return $plaintext;
 }
 
@@ -31,6 +31,6 @@ function crypt(string $message): string
 function decrypt(string $encrypted ): string
 {
     $key = Key::loadFromAsciiSafeString(config('app.encryption_key'));
-    $plaintext = Crypto::decrypt($encrypted, $key);;
+    $plaintext = Crypto::decrypt($encrypted, $key);
     return $plaintext;
 }

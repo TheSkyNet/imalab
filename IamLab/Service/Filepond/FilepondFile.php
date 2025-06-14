@@ -2,7 +2,11 @@
 
 namespace IamLab\Service\Filepond;
 
-class FilepondFile extends \SplFileInfo
+use RuntimeException;
+use SplFileInfo;
+use const PATHINFO_FILENAME;
+
+class FilepondFile extends SplFileInfo
 {
 
 
@@ -19,13 +23,13 @@ class FilepondFile extends \SplFileInfo
     {
         $filename = $this->getFilename();
 
-        return pathinfo($filename, \PATHINFO_FILENAME);
+        return pathinfo($filename, PATHINFO_FILENAME);
     }
 
     /**
      * Returns the contents of the file.
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function getContents(): string
     {
@@ -38,7 +42,7 @@ class FilepondFile extends \SplFileInfo
             restore_error_handler();
         }
         if (false === $content) {
-            throw new \RuntimeException($error);
+            throw new RuntimeException($error);
         }
 
         return $content;

@@ -201,7 +201,7 @@ var AdminCodeList = {
                                                                             if (confirm("Are You Sure") === true) {
                                                                                 AdminCode.delete(code.id)
                                                                             }
-                                                                            return;
+
 
                                                                         }
                                                                     },

@@ -1,12 +1,14 @@
 <?php
 
+use Phalcon\Config\Config;
+
 defined('APP_PATH') || define('APP_PATH', realpath('./IamLab'));
 defined('TMP_PATH') || define('TMP_PATH', sys_get_temp_dir());
 defined('TMP_DISK') || define('TMP_DISK', '/var/www/html/files/tmp');
 defined('ROOT_DISK') || define('ROOT_DISK', '/');
 defined('FILE_PATH') || define('FILE_PATH', '/var/www/html/public/files');
 
-return new \Phalcon\Config\Config([
+return new Config([
     'app' => [
         'encryption_key' => App\Core\Helpers\env('APP_KEY', 'def00000c6bbb616abfcd4abb5664b54c8002f6884d74e9b9778caab38c70c84f87a2c697ae66c9efb625ed18333c372e49311c575f2367ab484b96aa9ca5bb3d81cf4a1'),
         'baseUri' => App\Core\Helpers\env('APP_BASE_URI'),

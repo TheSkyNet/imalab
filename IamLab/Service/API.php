@@ -11,6 +11,7 @@ use IamLab\Model\Project;
 use IamLab\Model\User;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
+use SodiumException;
 use function App\Core\Helpers\dd;
 use function App\Core\Helpers\decrypt;
 use function App\Core\Helpers\moveTo;
@@ -22,6 +23,9 @@ use function App\Core\Helpers\moveTo;
  */
 class API extends aAPI
 {
+    /**
+     * @return void
+     */
     public function getAllAction()
     {
         $posts = Post::find();
@@ -74,13 +78,13 @@ class API extends aAPI
 
     public function newUserAction()
     {
-//       / $this->isAuthenticated;
+      $this->isAuthenticated;
         $user = (new User())->setName(
             $this->getParam('name')
         )->setEmail(
             $this->getParam('email')
         )->setKey(
-            uniqid()
+            uniqid('', true)
         )->setPassword(
             password_hash($this->getParam('password'), PASSWORD_DEFAULT)
         )->save();
@@ -121,7 +125,7 @@ class API extends aAPI
 
     public function newCodeAction()
     {
-//       / $this->isAuthenticated;
+        $this->isAuthenticated;
         $posts = (new Code())->setImg(
             $this->getParam('img')
         )->setTitle(
@@ -133,7 +137,7 @@ class API extends aAPI
     }
     public function updateCodeAction()
     {
-//       / $this->isAuthenticated;
+       $this->isAuthenticated;
         $posts = (new Code())->setImg(
             $this->getParam('img')
         )->setTitle(
@@ -155,13 +159,13 @@ class API extends aAPI
 
     /**
      * @throws FilesystemException
-     * @throws \SodiumException
+     * @throws SodiumException
      */
-    public function saveFilesAction()
+    public function saveFilesAction(): void
     {
         $project = $this->file->listContents('', true);
 
-        $id = json_decode(decrypt($this->getParam('file')));
+        $id = json_decode(decrypt($this->getParam('file')), false);
 
         $faile = Filepond::findFirst($id->id);
 
