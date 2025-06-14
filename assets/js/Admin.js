@@ -9,8 +9,8 @@ import {AdminUserList} from "./Admin/AdminUsers";
 import {Auth, LoginList} from "./Login/LoginModule";
 
 require('./ImaLab.js');
-var root = document.getElementById('main');
-  m.request({
+let root = document.getElementById('main');
+m.request({
         method: "GET",
         url: "/auth",
         headers: {
@@ -36,7 +36,6 @@ var root = document.getElementById('main');
               "/user": adminLayout(AdminUserList),
               "/user/:id": adminLayout(AdminUserList),
               "/login": adminLayout(AdminUserList),
-
 
           });
       }else {

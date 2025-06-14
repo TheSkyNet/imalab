@@ -1,5 +1,5 @@
 const EasyMDE = require("easymde");
-const Loading = require("../components/Loading");
+const Loadings = require("../components/Loadings");
 const {MessageDisplay} = require("../components/MessageDisplay");
 
 var AdminProject = {

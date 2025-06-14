@@ -1,5 +1,5 @@
 // Loading component
-const Loading = {
+const Loadings = {
     view:  function (){
         return m("div.loading-spinner", {
             style: {
@@ -22,4 +22,4 @@ const Loading = {
 
 
 
-export default Loading;
+export default Loadings;

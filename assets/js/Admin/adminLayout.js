@@ -1,3 +1,5 @@
+const ScientistLogo = require("../components/ScientistLogo");
+
 function adminLayout(view) {
     return {
         view: (vnode) => {
@@ -16,6 +18,8 @@ function adminLayout(view) {
                         m("i.octicon.octicon-beaker", { style: { marginRight: '0.5rem' } }),
                         "IAM Lab"
                     ]),
+                    m(ScientistLogo),
+
                     m("ul.navbar-nav.px-3",
                         m("li.nav-item",
                             m("a.nav-link.text-white", { href: "#" }, [
