@@ -226,7 +226,7 @@ class Package extends Entity
     public function castLang()
     {
       //  dd(PackageType::getValues());
-        return PackageType::get(intval($this->lang))->getName();
+        return PackageType::get($this->lang)->getName();
 
     }
 

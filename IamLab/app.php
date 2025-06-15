@@ -66,6 +66,14 @@ $app->patch('/api/v1/file', [(new FilepondApi()), "patch"]);
 //$app->head('/api/v1/file', [(new FilepondApi()), "head"]);
 $app->post('/api/v1/seo/generate/{type}', [(new API()), "generateSeoFileAction"]);
 
+
+$app->get('/api/v1/settings', [(new API), "getSettingsAction"]);
+$app->get('/api/v1/settings/{key}', [(new API), "getSettingByKeyAction"]);
+$app->post('/api/v1/settings', [(new API), "newSettingAction"]);
+$app->put('/api/v1/settings/{key}', [(new API), "updateSettingAction"]);
+$app->delete('/api/v1/settings/{key}', [(new API), "deleteSettingAction"]);
+
+
 /*
  * Admin
  */

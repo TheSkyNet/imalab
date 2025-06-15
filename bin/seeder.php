@@ -83,6 +83,9 @@ try {
     echo "\nStarting to seed projects...\n";
     $projectSeeder = new ProjectSeeder();
     $projectSeeder->run();
+    echo "\nStarting to seed site settings...\n";
+    $siteSettingsSeeder = new \IamLab\Migrations\Seeders\SiteSettingsSeeder();
+    $siteSettingsSeeder->run();
 
     // Commit transaction
     $di->get('db')->commit();

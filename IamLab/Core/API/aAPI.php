@@ -59,5 +59,9 @@ abstract class aAPI extends Injectable
         return cast($data, $cast);
     }
 
+    protected function hasParam(string $string)
+    {
+        return isset($this->getData()[$string]);
+    }
 
 }

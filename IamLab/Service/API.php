@@ -8,6 +8,7 @@ use IamLab\Model\Filepond;
 use IamLab\Model\Package;
 use IamLab\Model\Post;
 use IamLab\Model\Project;
+use IamLab\Model\SiteSetting;
 use IamLab\Model\User;
 use IamLab\Service\SEO\LLMsService;
 use IamLab\Service\SEO\SitemapService;
@@ -387,5 +388,145 @@ class API extends aAPI
             file_get_contents($url);
         }
     }
+
+
+    /**
+     * Get all site settings
+     */
+    public function getSettingsAction()
+    {
+        $settings = SiteSetting::find();
+        $this->dispatch($settings);
+    }
+
+    /**
+     * Get a specific setting by key
+     * @param string $key
+     */
+    public function getSettingByKeyAction(string $key)
+    {
+        $setting = SiteSetting::findFirst([
+            'conditions' => 'key = :key:',
+            'bind' => ['key' => $key]
+        ]);
+
+        if (!$setting) {
+            $this->dispatch(['error' => 'Setting not found'], 404);
+            return;
+        }
+
+        $this->dispatch($setting);
+    }
+
+    /**
+     * Create a new setting
+     */
+    public function newSettingAction()
+    {
+        $this->isAuthenticated;
+
+        try {
+            $setting = new SiteSetting();
+            $setting->setKey($this->getParam('key'))
+                ->setType($this->getParam('type'))
+                ->setValue($this->getParam('value'))
+                ->setDescription($this->getParam('description', ''));
+
+            if (!$setting->save()) {
+                $messages = [];
+                foreach ($setting->getMessages() as $message) {
+                    $messages[] = $message->getMessage();
+                }
+                throw new \Exception(implode(', ', $messages));
+            }
+
+            $this->dispatch($setting);
+        } catch (\Exception $e) {
+            $this->dispatch([
+                'error' => true,
+                'message' => 'Failed to create setting: ' . $e->getMessage()
+            ], 400);
+        }
+    }
+
+    /**
+     * Update an existing setting
+     * @param string $key
+     */
+    public function updateSettingAction(string $key): void
+    {
+        $this->isAuthenticated;
+
+        try {
+            $setting = SiteSetting::findFirst([
+                'conditions' => 'key = :key:',
+                'bind' => ['key' => $key]
+            ]);
+
+            if (!$setting) {
+                $this->dispatch(['error' => 'Setting not found'], 404);
+                return;
+            }
+
+            if ($this->hasParam('value')) {
+                $setting->setValue($this->getParam('value'));
+            }
+
+            if ($this->hasParam('type')) {
+                $setting->setType($this->getParam('type'));
+            }
+
+            if ($this->hasParam('description')) {
+                $setting->setDescription($this->getParam('description'));
+            }
+
+            if (!$setting->save()) {
+                $messages = [];
+                foreach ($setting->getMessages() as $message) {
+                    $messages[] = $message->getMessage();
+                }
+                throw new \Exception(implode(', ', $messages));
+            }
+
+            $this->dispatch($setting);
+        } catch (\Exception $e) {
+            $this->dispatch([
+                'error' => true,
+                'message' => 'Failed to update setting: ' . $e->getMessage()
+            ], 400);
+        }
+    }
+
+    /**
+     * Delete a setting
+     * @param string $key
+     */
+    public function deleteSettingAction(string $key)
+    {
+        $this->isAuthenticated;
+
+        $setting = SiteSetting::findFirst([
+            'conditions' => 'key = :key:',
+            'bind' => ['key' => $key]
+        ]);
+
+        if (!$setting) {
+            $this->dispatch(['error' => 'Setting not found'], 404);
+            return;
+        }
+
+        if (!$setting->delete()) {
+            $this->dispatch([
+                'error' => true,
+                'message' => 'Failed to delete setting'
+            ], 400);
+            return;
+        }
+
+        $this->dispatch(['success' => true]);
+    }
+
+
+
 
 }
