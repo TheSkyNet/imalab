@@ -9,6 +9,7 @@ import {Auth, LoginList} from "./Login/LoginModule";
 import {AdminSettings} from "./Admin/AdminSettings";
 import {SEOTools} from "./Admin/SEOTools";
 import AdminDashboard from "./Admin/AdminDashboard";
+import {AdminTerminal} from "./Admin/AdminTerminal";
 
 require('./ImaLab.js');
 let root = document.getElementById('main');
@@ -25,6 +26,7 @@ m.request({
       if(Auth.id){
           m.route(root, "/", {
               "/": adminLayout(AdminDashboard),
+              "/terminal": adminLayout(AdminTerminal), // Add this line
               "/project": adminLayout(AdminProjectList),
               "/project/:id":adminLayout(AdminProjectList),
               "/post": adminLayout(AdminPostList),

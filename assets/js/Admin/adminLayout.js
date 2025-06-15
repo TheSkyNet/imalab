@@ -92,6 +92,7 @@ function adminLayout(view) {
                                     navItem("/post", "Posts", "octicon-react"),
                                     navItem("/settings", "Settings", "octicon-gear"),
                                     navItem("/seo", "SEO Tools", "octicon-search"),
+                                    navItem("/terminal", "Terminal", "octicon-terminal" ),
 
                                 ])
                             ])
