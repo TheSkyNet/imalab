@@ -4,22 +4,27 @@
  *
  * @var Micro $app
  */
+
 use IamLab\Service\Admin;
 use IamLab\Service\API;
 use IamLab\Service\Auth;
 use IamLab\Service\Filepond\FilepondApi;
 use Phalcon\Mvc\Micro;
-
+use IamLab\Service\SettingsService;
 /**
  * Add your routes here
  */
-
 $app->get(
-  '/',
-  function () use ($app)
-  {
-    echo $app['view']->render('index');
-  }
+    '/',
+    function () use ($app) {
+        $settingsService = new SettingsService();
+        $settingsService->initialize();
+
+        echo $app['view']->render('index',[
+            'settings' => $settingsService->getFormatted(),
+//            'rawSettings' => $settingsService->getRaw(),
+        ]);
+    }
 );
 
 /*

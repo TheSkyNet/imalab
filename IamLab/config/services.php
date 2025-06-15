@@ -4,8 +4,6 @@ use IamLab\Service\Filepond\FilepondService;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Phalcon\Acl\Adapter\Memory;
 use Phalcon\Autoload\Loader;
-use Phalcon\Di\FactoryDefault;
-use Phalcon\Mvc\Micro;
 use IamLab\Service\Auth\AuthService;
 use Phalcon\Http\Response;
 use Phalcon\Mvc\View\Simple;
@@ -14,7 +12,6 @@ use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Session\Manager;
 use Phalcon\Session\Adapter\Stream;
 use function App\Core\Helpers\config;
-use function App\Core\Helpers\dd;
 
 /**
  * Shared configuration service
