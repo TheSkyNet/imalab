@@ -326,7 +326,6 @@ const ScientistLogo = {
 
     getAnimationStyles: function() {
         return `
-            ${this.existingStyles}
             
             @keyframes flame-flicker {
                 0%, 100% { transform: scaleY(1) translateY(0); }
