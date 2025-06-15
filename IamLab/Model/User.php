@@ -6,6 +6,9 @@ use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Validator\Email as Email;
 
+/**
+ * @method static findFirstByEmail(string $getEmail)
+ */
 class User extends Model
 {
 

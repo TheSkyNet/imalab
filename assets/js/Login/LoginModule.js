@@ -37,7 +37,35 @@ const Login = {
         });
     }
 };
+const Logout = {
+    logout: function() {
+        return m.request({
+            method: "POST",
+            url: "/auth/logout",
+            withCredentials: true
+        }).then(function(result) {
+            if (!result.success) {
+                MessageDisplay.setMessage(result.message, 'error');
+                return;
+            }
+            MessageDisplay.setMessage(result.message, 'success');
+            setTimeout(() => {
+                window.location.href = '/';  // Changed from '/login' to '/'
+            }, 1500);
+        }).catch(error => {
+            let errorMessage = 'Unable to connect to the server. Please try again later.';
 
+            if (error.response && error.response.message) {
+                errorMessage = error.response.message;
+            } else if (error.code === 429) {
+                errorMessage = 'Too many attempts. Please try again later.';
+            }
+
+            MessageDisplay.setMessage(errorMessage, 'error');
+            console.error("Logout failed:", error);
+        });
+    }
+};
 
 
 const Auth = {};
@@ -100,4 +128,4 @@ const LoginList = {
     }
 };
 
-module.exports = { LoginList, Login, Auth };
+module.exports = { LoginList, Login, Auth , Logout};

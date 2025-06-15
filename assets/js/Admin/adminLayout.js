@@ -1,4 +1,5 @@
 const ScientistLogo = require("../components/ScientistLogo");
+const {Logout} = require("../Login/LoginModule");
 
 function adminLayout(view) {
     return {
@@ -48,12 +49,13 @@ function adminLayout(view) {
                         },
                         m("li.nav-item",
                             m("a.nav-link.text-white", {
-                                href: "#",
+                                onclick: Logout.logout,  // Add the logout function here
                                 style: {
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: '0.5rem',
-                                    whiteSpace: 'nowrap'
+                                    whiteSpace: 'nowrap',
+                                    cursor: 'pointer'  // Add cursor pointer to show it's clickable
                                 }
                             }, [
                                 m("i.octicon.octicon-sign-out"),
@@ -61,6 +63,7 @@ function adminLayout(view) {
                             ])
                         )
                     )
+
                 ]),
 
 

@@ -131,7 +131,7 @@ var AdminProjectList = {
     },
     view: function(vnode) {
         if (AdminProjectList.loading) {
-            return m(Loading);
+            return m(Loadings);
         }
         return [
             m(MessageDisplay),  // Add MessageDisplay at the top

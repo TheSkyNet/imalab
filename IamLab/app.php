@@ -81,6 +81,7 @@ $app->get(
     echo $app['view']->render('auth');
   }
 );
+$app->post('/auth/logout', [(new Auth()), "logoutAction"]);
 $app->post('/auth', [(new Auth()), "authAction"]);
 $app->get('/auth', [(new Auth()), "userAction"]);
 /**

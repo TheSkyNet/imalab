@@ -75,10 +75,6 @@ class AuthService extends aAPI
         return $this->session->get('auth-identity');
     }
 
-    public function deauthenticate()
-    {
-        $this->session->destroy();
-    }
 
     /**
      * @param User $user
@@ -109,4 +105,37 @@ class AuthService extends aAPI
 
         return true;
     }
+    /**
+     * Deauthenticates the current user by destroying their session and clearing identity
+     *
+     * @return bool Returns true if deauthentication was successful
+     * @throws Exception If session destruction fails
+     */
+    public function deauthenticate(): bool
+    {
+        try {
+            // Clear the auth identity first
+            $this->session->remove('auth-identity');
+
+            // Reset session state
+            $this->isAuthenticated = false;
+            $this->state = null;
+
+            // Regenerate the session ID to prevent session fixation attacks
+            $this->session->regenerateId(true);
+
+            // Destroy the session
+            $this->session->destroy();
+
+            return true;
+
+        } catch (Exception $e) {
+            // Log the error if you have a logger configured
+            if (isset($this->logger)) {
+                $this->logger->error('Deauthentication failed: ' . $e->getMessage());
+            }
+            throw $e;
+        }
+    }
+
 }

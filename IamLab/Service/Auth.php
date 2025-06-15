@@ -83,4 +83,24 @@ class Auth extends aAPI
                 )
         );
     }
+    public function logoutAction()
+    {
+        try {
+            $authService = new AuthService();
+            $authService->deauthenticate();
+
+            $this->dispatch([
+                'success' => true,
+                'message' => 'Logged out successfully'
+            ]);
+
+        } catch (Exception $e) {
+            $this->dispatch([
+                'success' => false,
+                'message' => 'An error occurred during logout',
+                'debug' => $e->getMessage() // Only include in development
+            ]);
+        }
+    }
+
 }
