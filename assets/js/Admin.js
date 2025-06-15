@@ -9,6 +9,7 @@ import {AdminUserList} from "./Admin/AdminUsers";
 import {Auth, LoginList} from "./Login/LoginModule";
 import {AdminSettings} from "./Admin/AdminSettings";
 import {SEOTools} from "./Admin/SEOTools";
+import {AdminDashboard} from "./Admin/AdminDashboard";
 
 require('./ImaLab.js');
 let root = document.getElementById('main');
@@ -24,7 +25,7 @@ m.request({
       Object.assign(Auth, result);
       if(Auth.id){
           m.route(root, "/", {
-              "/": adminLayout(AdminProjectList),
+              "/": adminLayout(AdminDashboard),
               "/project": adminLayout(AdminProjectList),
               "/project/:id":adminLayout(AdminProjectList),
               "/post": adminLayout(AdminPostList),
