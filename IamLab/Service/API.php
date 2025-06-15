@@ -129,14 +129,33 @@ class API extends aAPI
     public function newCodeAction()
     {
         $this->isAuthenticated;
-        $posts = (new Code())->setImg(
-            $this->getParam('img')
-        )->setTitle(
-            $this->getParam('title')
-        )->setBody(
-            $this->getParam('body')
-        )->save();
-        $this->dispatch($posts);
+        $code = new Code();
+
+        $code->setImg(  "/files/HORSE2.fw.png");
+        $code->setTitle( "Demo");
+        $code->setBody($this->getParam('body'));
+        $code->setType('html');
+
+        // The simple fix: Check if create() returns false.
+        if ($code->create() === false) {
+            $errors =[];
+            foreach ($code->getMessages() as $message) {
+               $errors[] = $message->getMessage();
+            }
+            $this->dispatch(
+                [
+                    'success' => false,
+                    'errors' => $errors
+                ]
+            );
+
+        }
+
+      $this->dispatch(
+            [
+                'success' => true,
+            ]
+        );
     }
     public function updateCodeAction()
     {
