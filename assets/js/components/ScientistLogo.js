@@ -16,20 +16,18 @@ const ScientistLogo = {
             ],
             heldBeaker: null,
             bunsenX: 700,
-            lastInteractionTime: 0
+            lastInteractionTime: 0,
         };
     },
 
 
-
-
-    oncreate: function(vnode) {
+    oncreate: function() {
         this.startAnimation();
-        // Random cat appearances
-        // this.catInterval = setInterval(() => {
-        //     this.state.catVisible = Math.random() < 0.3;
-        //     m.redraw();
-        // }, 6000);
+        // Simple cat appearances every 5 seconds
+        this.catInterval = setInterval(() => {
+            this.state.catVisible = !this.state.catVisible;
+            m.redraw();
+        }, 5000);
     },
 
     onremove: function() {
@@ -113,9 +111,6 @@ const ScientistLogo = {
         }
     },
 
-
-
-
     handleBeakerInteraction: function(beaker) {
         if (!this.state.heldBeaker && beaker.filled) {
             this.state.heldBeaker = { ...beaker };
@@ -158,15 +153,16 @@ const ScientistLogo = {
                 viewBox: "0 0 1000 60",
                 style: { width: "100%", height: "100%" }
             }, [
+                // Base line
 
-                // Render all beakers
+                // Beakers
                 ...this.state.beakers.map(this.renderBeaker.bind(this)),
+
+                // Cat (add this line!)
+                this.state.catVisible && this.renderCat(),
 
                 // Bunsen burner
                 this.renderBunsenBurner(),
-
-                // Cat
-                this.state.catVisible && this.renderCat(),
 
                 // Scientist
                 this.renderScientist(),
@@ -175,8 +171,16 @@ const ScientistLogo = {
                 this.state.heldBeaker && this.renderHeldBeaker()
             ]),
 
-            // Animations
-            m("style", this.getAnimationStyles())
+            m("style", `
+                ${this.getAnimationStyles()}
+                .animate-cat {
+                    animation: bounce 0.5s infinite;
+                }
+                @keyframes bounce {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-2px); }
+                }
+            `)
         ]);
     },
 
@@ -203,7 +207,7 @@ const ScientistLogo = {
             m("path", {
                 d: currentAction === 'walk' ?
                     `M0,15 L${-5 * Math.sin(walkPhase)},20 M0,15 L${5 * Math.sin(walkPhase + Math.PI)},20` :
-                    "M-3,15 L0,20 L3,15",
+                    "M-3,15 L-3,20 M3,15 L3,20", // Changed to parallel lines when standing
                 stroke: "#fff",
                 "stroke-width": "2",
                 class: currentAction === 'walk' ? 'walking-legs' : ''
@@ -261,20 +265,49 @@ const ScientistLogo = {
     },
 
     renderCat: function() {
-        const catX = 300 + Math.random() * 400;
-        return m("g.cat", { transform: `translate(${catX}, 40)` }, [
+        return m("g.cat", {
+            transform: `translate(850, 42)` // Moved slightly down
+        }, [
+            // Body (smaller oval)
             m("path", {
-                d: "M-3,0 Q0,-5 3,0 M-4,-3 L-6,-5 M4,-3 L6,-5 M0,0 Q-4,4 0,2 Q4,4 0,2",
+                d: "M0,0 Q2,-4 4,0 Q6,-4 8,0 Q4,2 0,0",
+                fill: "#333333", // Very dark gray
+                class: "animate-cat"
+            }),
+            // Face
+            m("path", {
+                d: "M2.5,-1 L3,-1 M5,-1 L5.5,-1", // Tiny eyes
                 stroke: "#fff",
+                "stroke-width": "0.5"
+            }),
+            // Ears (smaller triangles)
+            m("path", {
+                d: "M2,-4 L3,-5 L4,-4 M6,-4 L7,-5 L8,-4",
+                fill: "#333333",
+                stroke: "#333333",
+                "stroke-width": "0.5"
+            }),
+            // Curly tail
+            m("path", {
+                d: "M8,0 Q10,-2 9,-4 Q8,-6 10,-5",
+                stroke: "#333333",
                 "stroke-width": "1",
                 fill: "none",
-                class: "animate-cat"
+                class: "animate-tail"
             })
         ]);
     },
 
+
     getAnimationStyles: function() {
         return `
+           .animate-cat {
+                animation: bounce 2s infinite;
+            }
+            .animate-tail {
+                animation: tail-wave 2s infinite;
+            }
+
             @keyframes walk {
                 0%, 100% { transform: translateY(0); }
                 50% { transform: translateY(-2px); }
