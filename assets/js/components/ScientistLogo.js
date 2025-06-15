@@ -266,32 +266,27 @@ const ScientistLogo = {
 
     renderCat: function() {
         return m("g.cat", {
-            transform: `translate(850, 42)` // Moved slightly down
+            transform: `translate(850, 42)`
         }, [
-            // Body (smaller oval)
+            // Round body
+            m("circle", {
+                cx: 0, cy: 0,
+                r: 6,
+                fill: "#333333"
+            }),
+            // Pointy ears
             m("path", {
-                d: "M0,0 Q2,-4 4,0 Q6,-4 8,0 Q4,2 0,0",
-                fill: "#333333", // Very dark gray
-                class: "animate-cat"
+                d: "M-3,-4 L-4,-8 L-2,-4 M3,-4 L4,-8 L2,-4",
+                fill: "#333333"
             }),
             // Face
+            m("circle", { cx: -2, cy: -1, r: 0.7, fill: "#ffffff" }), // Left eye
+            m("circle", { cx: 2, cy: -1, r: 0.7, fill: "#ffffff" }), // Right eye
+            // Tail (wagging)
             m("path", {
-                d: "M2.5,-1 L3,-1 M5,-1 L5.5,-1", // Tiny eyes
-                stroke: "#fff",
-                "stroke-width": "0.5"
-            }),
-            // Ears (smaller triangles)
-            m("path", {
-                d: "M2,-4 L3,-5 L4,-4 M6,-4 L7,-5 L8,-4",
-                fill: "#333333",
+                d: "M5,2 Q9,2 11,-2",
                 stroke: "#333333",
-                "stroke-width": "0.5"
-            }),
-            // Curly tail
-            m("path", {
-                d: "M8,0 Q10,-2 9,-4 Q8,-6 10,-5",
-                stroke: "#333333",
-                "stroke-width": "1",
+                "stroke-width": "2",
                 fill: "none",
                 class: "animate-tail"
             })
@@ -299,14 +294,18 @@ const ScientistLogo = {
     },
 
 
+
     getAnimationStyles: function() {
         return `
-           .animate-cat {
-                animation: bounce 2s infinite;
-            }
             .animate-tail {
-                animation: tail-wave 2s infinite;
+                animation: wag 2s infinite ease-in-out;
+                transform-origin: 3px 2px;
             }
+            @keyframes wag {
+                0%, 100% { transform: rotate(0deg); }
+                50% { transform: rotate(20deg); }
+            }
+
 
             @keyframes walk {
                 0%, 100% { transform: translateY(0); }
