@@ -7,68 +7,42 @@ const ScientistLogo = {
             walkPhase: 0,
             catVisible: false,
             currentAction: 'walk',
-            targetX: null,
             beakers: [
-                { id: 1, x: 200, color: '#ffb3b3', filled: true }, // Pink
-                { id: 2, x: 350, color: '#b8e6b8', filled: true }, // Green
-                { id: 3, x: 500, color: '#b3d9ff', filled: true }, // Blue
-                { id: 4, x: 650, color: null, filled: false }      // Empty mixing beaker
+                { id: 1, x: 200, color: '#ffb3b3', filled: true }, // Pastel pink
+                { id: 2, x: 350, color: '#b8e6b8', filled: true }, // Mint green
+                { id: 3, x: 500, color: '#b3d9ff', filled: true }, // Baby blue
+                { id: 4, x: 650, color: null, filled: false }      // Mixing beaker
             ],
             heldBeaker: null,
-            bunsenX: 700,
-            lastInteractionTime: 0
+            bunsenX: 800
         };
     },
-
-
-
-
-    oncreate: function(vnode) {
+    oncreate: function() {
         this.startAnimation();
         // Random cat appearances
-        // this.catInterval = setInterval(() => {
-        //     this.state.catVisible = Math.random() < 0.3;
-        //     m.redraw();
-        // }, 6000);
+        this.catInterval = setInterval(() => {
+            this.state.catVisible = Math.random() < 0.3;
+            m.redraw();
+        }, 6000);
     },
 
     onremove: function() {
         clearInterval(this.catInterval);
         cancelAnimationFrame(this.animationFrame);
     },
-    chooseNewDestination: function() {
-        const possibleDestinations = [
-            ...this.state.beakers.map(b => b.x),
-            this.state.heldBeaker ? this.state.bunsenX : null
-        ].filter(x => x !== null && Math.abs(x - this.state.scientistX) > 100);
-
-        if (possibleDestinations.length > 0) {
-            const randomIndex = Math.floor(Math.random() * possibleDestinations.length);
-            this.state.targetX = possibleDestinations[randomIndex];
-            this.state.direction = this.state.targetX > this.state.scientistX ? 1 : -1;
-        } else {
-            // If no valid destinations, just walk to a random point
-            this.state.targetX = 100 + Math.random() * 700;
-            this.state.direction = this.state.targetX > this.state.scientistX ? 1 : -1;
-        }
-    },
 
     startAnimation: function() {
-        this.chooseNewDestination();
         const animate = () => {
-            const now = Date.now();
             if (this.state.currentAction === 'walk') {
                 this.state.walkPhase = (this.state.walkPhase + 0.15) % (2 * Math.PI);
                 this.state.scientistX += 2 * this.state.direction;
 
-                // Check if we reached target or boundaries
-                if (Math.abs(this.state.scientistX - this.state.targetX) < 5 ||
-                    this.state.scientistX > 800 || this.state.scientistX < 100) {
-                    if (now - this.state.lastInteractionTime > 2000) {
-                        this.chooseNewDestination();
-                    }
+                // Check boundaries and reverse direction
+                if (this.state.scientistX > 900 || this.state.scientistX < 100) {
+                    this.state.direction *= -1;
                 }
 
+                // Check for interactions
                 this.checkInteractions();
             }
             m.redraw();
@@ -77,61 +51,46 @@ const ScientistLogo = {
         animate();
     },
 
-
     checkInteractions: function() {
-        const now = Date.now();
-        // Only check for interactions if enough time has passed
-        if (now - this.state.lastInteractionTime < 2000) {
-            return;
-        }
-
+        // Check beakers
         const nearestBeaker = this.state.beakers.find(b =>
-            Math.abs(this.state.scientistX - b.x) < 15 &&
-            (this.state.heldBeaker ? !b.filled : b.filled)
+            Math.abs(this.state.scientistX - b.x) < 15
         );
 
         if (nearestBeaker) {
             this.state.currentAction = 'interact';
-            this.state.lastInteractionTime = now;
-            setTimeout(() => {
-                this.handleBeakerInteraction(nearestBeaker);
-                this.chooseNewDestination();
-            }, 500);
+            setTimeout(() => this.handleBeakerInteraction(nearestBeaker), 1000);
             return;
         }
 
-        if (Math.abs(this.state.scientistX - this.state.bunsenX) < 15 &&
-            this.state.heldBeaker &&
-            this.state.targetX === this.state.bunsenX) {
+        // Check Bunsen burner
+        if (Math.abs(this.state.scientistX - this.state.bunsenX) < 15) {
             this.state.currentAction = 'heat';
-            this.state.lastInteractionTime = now;
             setTimeout(() => {
-                this.state.heldBeaker.color = this.darkenColor(this.state.heldBeaker.color);
+                if (this.state.heldBeaker) {
+                    // Darken the color when heated
+                    this.state.heldBeaker.color = this.darkenColor(this.state.heldBeaker.color);
+                }
                 this.state.currentAction = 'walk';
-                this.chooseNewDestination();
             }, 2000);
         }
     },
 
-
-
-
     handleBeakerInteraction: function(beaker) {
         if (!this.state.heldBeaker && beaker.filled) {
+            // Pick up beaker
             this.state.heldBeaker = { ...beaker };
             beaker.filled = false;
-            this.state.heatedBeaker = false; // Reset heated state when picking up new beaker
         } else if (this.state.heldBeaker && !beaker.filled) {
+            // Pour into empty beaker
             beaker.filled = true;
             beaker.color = this.state.heldBeaker.color;
             this.state.heldBeaker = null;
-            this.state.heatedBeaker = false; // Reset heated state after pouring
         }
         setTimeout(() => {
             this.state.currentAction = 'walk';
-        }, 500);
-    }
-    ,
+        }, 1000);
+    },
 
     darkenColor: function(color) {
         const factor = 0.8; // Darken by 20%
@@ -158,6 +117,11 @@ const ScientistLogo = {
                 viewBox: "0 0 1000 60",
                 style: { width: "100%", height: "100%" }
             }, [
+                // Base line
+                m("line", {
+                    x1: "50", y1: "50", x2: "950", y2: "50",
+                    stroke: "#fff", "stroke-width": "2"
+                }),
 
                 // Render all beakers
                 ...this.state.beakers.map(this.renderBeaker.bind(this)),
