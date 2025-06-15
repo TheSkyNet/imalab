@@ -9,6 +9,7 @@ use IamLab\Model\Package;
 use IamLab\Model\Post;
 use IamLab\Model\Project;
 use IamLab\Model\User;
+use IamLab\Service\SEO\LLMsService;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use SodiumException;
@@ -331,6 +332,37 @@ class API extends aAPI
         )->save();
         $this->dispatch($posts);
     }
+    /**
+     * @param $type
+     * @return void
+     */
+    public function generateSeoFileAction($type): void
+    {
+        $this->isAuthenticated;
 
+        try {
+            switch ($type) {
+                case 'llms':
+                    $service = new LLMsService($this->fs);
+                    $result = $service->generate();
+                    if (!$result) {
+                        throw new \RuntimeException("Failed to write llms.txt file");
+                    }
+                    break;
+                default:
+                    throw new \InvalidArgumentException("Unsupported file type: $type");
+            }
 
+            $this->dispatch([
+                'success' => true,
+                'message' => "Successfully generated $type file"
+            ]);
+
+        } catch (\Exception $e) {
+            $this->dispatch([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
 }

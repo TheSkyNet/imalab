@@ -7,6 +7,8 @@ import {AdminFileList} from "./Admin/AdminFiles";
 import {AdminCodeList} from "./Admin/AdminCode";
 import {AdminUserList} from "./Admin/AdminUsers";
 import {Auth, LoginList} from "./Login/LoginModule";
+import {AdminSettings} from "./Admin/AdminSettings";
+import {SEOTools} from "./Admin/SEOTools";
 
 require('./ImaLab.js');
 let root = document.getElementById('main');
@@ -36,12 +38,13 @@ m.request({
               "/user": adminLayout(AdminUserList),
               "/user/:id": adminLayout(AdminUserList),
               "/login": adminLayout(AdminUserList),
+              "/settings": adminLayout(AdminSettings),
+              "/seo": adminLayout(SEOTools),
 
           });
       }else {
           m.route(root, "/", {
               "/": LoginList
-
           });
       }
 

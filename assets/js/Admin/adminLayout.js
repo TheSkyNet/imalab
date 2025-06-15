@@ -89,7 +89,10 @@ function adminLayout(view) {
                                     navItem("/code", "Code", "octicon-code"),
                                     navItem("/file", "Files", "octicon-file"),
                                     navItem("/package", "Packages", "octicon-archive"),
-                                    navItem("/post", "Posts", "octicon-react")
+                                    navItem("/post", "Posts", "octicon-react"),
+                                    navItem("/settings", "Settings", "octicon-gear"),
+                                    navItem("/seo", "SEO Tools", "octicon-search"),
+
                                 ])
                             ])
                         ),

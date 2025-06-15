@@ -64,6 +64,7 @@ $app->post('/api/v1/file/save', [(new API()), "saveFilesAction"]);
 $app->post('/api/v1/file', [(new FilepondApi()), "process"]);
 $app->patch('/api/v1/file', [(new FilepondApi()), "patch"]);
 //$app->head('/api/v1/file', [(new FilepondApi()), "head"]);
+$app->post('/api/v1/seo/generate/{type}', [(new API()), "generateSeoFileAction"]);
 
 /*
  * Admin
@@ -94,3 +95,4 @@ $app->notFound(
     echo $app['view']->render('404');
   }
 );
+
