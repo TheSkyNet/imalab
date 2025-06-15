@@ -8,27 +8,61 @@ function adminLayout(view) {
                 m("nav.navbar.sticky-top.shadow-sm", {
                     style: {
                         background: '#8198c4',
-                        padding: '0.75rem'
+                        padding: '0.75rem',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        height: '60px' // Set explicit height for navbar
                     }
                 }, [
                     m("a.navbar-brand.text-white.font-weight-bold", {
                         href: "#",
-                        style: { fontSize: '1.4rem' }
+                        style: {
+                            fontSize: '1.4rem',
+                            minWidth: 'fit-content',
+                            marginRight: '1rem'
+                        }
                     }, [
-                        m("i.octicon.octicon-beaker", { style: { marginRight: '0.5rem' } }),
+                        m("i.octicon.octicon-beaker", {
+                            style: { marginRight: '0.5rem' }
+                        }),
                         "IAM Lab"
                     ]),
-                    m(ScientistLogo),
-
-                    m("ul.navbar-nav.px-3",
+                    m("div", {
+                        style: {
+                            flex: '1',
+                            maxWidth: 'calc(100% - 300px)',
+                            margin: '0 auto',
+                            marginTop: '-0.75rem',    // Negative margin to counter navbar padding
+                            marginBottom: '-0.75rem',  // Negative margin to counter navbar padding
+                            height: '60px'            // Match navbar height
+                        }
+                    }, [
+                        m(ScientistLogo)
+                    ]),
+                    m("ul.navbar-nav", {
+                            style: {
+                                marginLeft: '1rem',
+                                minWidth: 'fit-content'
+                            }
+                        },
                         m("li.nav-item",
-                            m("a.nav-link.text-white", { href: "#" }, [
+                            m("a.nav-link.text-white", {
+                                href: "#",
+                                style: {
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    whiteSpace: 'nowrap'
+                                }
+                            }, [
                                 m("i.octicon.octicon-sign-out"),
                                 " Sign out"
                             ])
                         )
                     )
                 ]),
+
 
                 // Main container
                 m("div.container-fluid", {
