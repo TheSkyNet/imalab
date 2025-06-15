@@ -10,6 +10,7 @@ import {AdminSettings} from "./Admin/AdminSettings";
 import {SEOTools} from "./Admin/SEOTools";
 import AdminDashboard from "./Admin/AdminDashboard";
 import {AdminTerminal} from "./Admin/AdminTerminal";
+import {AdminCodeEditor} from "./Admin/Code/AdminCodeEditor";
 
 require('./ImaLab.js');
 let root = document.getElementById('main');
@@ -34,6 +35,7 @@ m.request({
               "/package": adminLayout(AdminPackageList),
               "/package/:id": adminLayout(AdminPackageList),
               "/code": adminLayout(AdminCodeList),
+              "/code/new": adminLayout(AdminCodeEditor),  // Add this line
               "/code/:id": adminLayout(AdminCodeList),
               "/file": adminLayout(AdminFileList),
               "/file/:id": adminLayout(AdminFileList),
