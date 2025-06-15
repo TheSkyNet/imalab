@@ -26,25 +26,22 @@ class LLMsService
         $filePath = $publicDir . '/llms.txt';
 
         try {
-            if (file_put_contents($filePath, $content) === false) {
-                throw new \RuntimeException("Failed to write to file: $filePath");
-            }
+            $this->filesystem->write($filePath, $content);
             return true;
         } catch (\Exception $e) {
             error_log("Error generating llms.txt: " . $e->getMessage());
             throw new \RuntimeException("Failed to generate llms.txt: " . $e->getMessage());
         }
     }
-
-
     private function generateContent(): string
     {
         $projects = Project::find();
         $posts = Post::find();
         $packages = Package::find();
+        $siteDetails = $this->getSiteDetails();
 
-        $content = "# IAM Lab\n\n";
-        $content .= "> IAM Lab is an innovative technology laboratory focused on developing cutting-edge solutions in web development, artificial intelligence, and software architecture.\n\n";
+        $content = "# {$siteDetails['name']}\n\n";
+        $content .= "> {$siteDetails['about']}\n\n";
 
         // Projects Section
         $content .= "## Projects\n\n";
@@ -71,17 +68,36 @@ class LLMsService
 
         // Resources Section
         $content .= "## Resources\n\n";
-        $content .= "- [Documentation]({$this->baseUrl}/docs): Technical documentation and guides\n";
-        $content .= "- [API Reference]({$this->baseUrl}/api/docs): API documentation\n";
-        $content .= "- [GitHub](https://github.com/iam-lab): Our open source projects\n\n";
+        foreach ($siteDetails['resources'] as $resource) {
+            $content .= "- [{$resource['title']}]({$this->baseUrl}{$resource['link']}): {$resource['description']}\n";
+        }
+        $content .= "\n";
 
         // Legal Section
         $content .= "## Legal\n\n";
-        $content .= "- [Privacy Policy]({$this->baseUrl}/privacy): Our privacy policy\n";
-        $content .= "- [Terms of Service]({$this->baseUrl}/terms): Terms of service\n";
-        $content .= "- [AI Policy]({$this->baseUrl}/ai-policy): AI/LLM usage policy\n";
+        foreach ($siteDetails['legal'] as $legal) {
+            $content .= "- [{$legal['title']}]({$this->baseUrl}{$legal['link']})\n";
+        }
 
         return $content;
+    }
+
+    private function getSiteDetails(): array
+    {
+        return [
+            'name' => 'IAM Lab',
+            'about' => 'IAM Lab is an innovative technology laboratory focused on developing cutting-edge solutions in web development, artificial intelligence, and software architecture.',
+            'resources' => [
+                ['title' => 'Documentation', 'link' => '/docs', 'description' => 'Technical documentation and guides'],
+                ['title' => 'API Reference', 'link' => '/api/docs', 'description' => 'API documentation'],
+                ['title' => 'GitHub', 'link' => 'https://github.com/iam-lab', 'description' => 'Our open source projects']
+            ],
+            'legal' => [
+                ['title' => 'Privacy Policy', 'link' => '/privacy'],
+                ['title' => 'Terms of Service', 'link' => '/terms'],
+                ['title' => 'AI Policy', 'link' => '/ai-policy']
+            ]
+        ];
     }
 
     private function truncateBody(string $body, int $length = 150): string
