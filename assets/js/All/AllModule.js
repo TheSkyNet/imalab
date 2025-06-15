@@ -65,7 +65,7 @@ function postView(post) {
 
 function codeView(code) {
     return m(".card", [
-        m(m.route.Link, {class: "card", href:  code.type + '/' + code.id}, [
+        m(m.route.Link, {class: "card", href:  '/code/' + code.id}, [
                 m('div', {class: "card-img-top"},
                     m(
                         'img', {class: "img-fluid", src: code.img}
