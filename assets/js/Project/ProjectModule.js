@@ -32,7 +32,7 @@ let Project = {
 };
 
 let ProjectOne = {
-    onremove: function (vnode) {
+    onremove: function () {
         ProjectOne.loading = true;
     },
     loading: true,
@@ -103,7 +103,6 @@ let ProjectList = {
                             }
                         )
                     ),
-                    /* m('.grid-item-title', project.title),*/
                     m('.grid-item-slug .slug-' + project.type.trim(), project.type.trim())
                 ]
             )

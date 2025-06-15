@@ -1,5 +1,4 @@
 const EasyMDE = require("easymde");
-const Loadings = require("../components/Loadings");
 const {MessageDisplay} = require("../components/MessageDisplay");
 
 const AdminProjectList = {
@@ -8,12 +7,17 @@ const AdminProjectList = {
         if (vnode.attrs.id) {
             AdminProject.load(vnode.attrs.id).then(() => {
                 AdminProjectList.loading = false
-            })
-            // ;
+            });
         }
         AdminProject.loadList().then(() => {
             AdminProjectList.loading = false
         })
+    },
+    onremove: () => {
+        if (AdminProjectList.easyMDE) {
+            AdminProjectList.easyMDE.toTextArea();
+            AdminProjectList.easyMDE = null;
+        }
     },
     view: function(vnode) {
         if (AdminProjectList.loading) {
@@ -95,6 +99,10 @@ const AdminProjectList = {
                             m("textarea", {
                                 style: { marginTop: '0.25rem' },
                                 oncreate: (vnode) => {
+                                    if (AdminProjectList.easyMDE) {
+                                        AdminProjectList.easyMDE.toTextArea();
+                                        AdminProjkectList.easyMDE = null;
+                                    }
                                     AdminProjectList.easyMDE = new EasyMDE({
                                         element: vnode.dom,
                                         spellChecker: false
@@ -103,9 +111,27 @@ const AdminProjectList = {
                                     AdminProjectList.easyMDE.codemirror.on("change", () => {
                                         AdminProject.project.body = AdminProjectList.easyMDE.value();
                                     });
+                                },
+                                onbeforeupdate: () => {
+                                    if (AdminProjectList.easyMDE) {
+                                        AdminProjectList.easyMDE.toTextArea();
+                                        AdminProjectList.easyMDE = null;
+                                        return true;
+                                    }
+                                },
+                                onupdate: (vnode) => {
+                                    if (!AdminProjectList.easyMDE) {
+                                        AdminProjectList.easyMDE = new EasyMDE({
+                                            element: vnode.dom,
+                                            spellChecker: false
+                                        });
+                                        AdminProjectList.easyMDE.value(AdminProject.project.body);
+                                        AdminProjectList.easyMDE.codemirror.on("change", () => {
+                                            AdminProject.project.body = AdminProjectList.easyMDE.value();
+                                        });
+                                    }
                                 }
                             }),
-
                             m("button.btn", {
                                 type: "submit",
                                 style: {
@@ -293,6 +319,5 @@ const AdminProject = {
     }
 
 };
-
 
 module.exports = {AdminProjectList, AdminProject}
