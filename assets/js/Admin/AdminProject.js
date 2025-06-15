@@ -2,121 +2,7 @@ const EasyMDE = require("easymde");
 const Loadings = require("../components/Loadings");
 const {MessageDisplay} = require("../components/MessageDisplay");
 
-var AdminProject = {
-    list: [],
-    project: {
-        title: '',
-        img: '',
-        body: '',
-    },
-
-    current: [],
-    loadList: function () {
-        return m.request({
-            method: "GET",
-            url: "/api/v1/project",
-            withCredentials: true,
-        })
-            .then(function (result) {
-                AdminProject.list = result
-            })
-    },
-    delete(id) {
-        return m.request({
-                method: "DELETE",
-                url: "/api/v1/project/" + id,
-                withCredentials: true,
-            }
-        ).then(function () {
-            AdminProject.loadList()
-        })
-    },
-
-    load: function (id) {
-        return m.request({
-                method: "GET",
-                url: "/api/v1/project/" + id,
-                withCredentials: true,
-            }
-        ).then(function (result) {
-            AdminProject.project = result
-        })
-    },
-    addProject() {
-        if (!this.validateProject()) {
-            return;
-        }
-
-        return m.request({
-            method: "POST",
-            url: "/api/v1/project",
-            headers: {
-                'X-CSRF-Token': this.CSRF,
-                'Accept': `application/json`
-            },
-            withCredentials: true,
-            body: AdminProject.project,
-        })
-            .then(function() {
-                MessageDisplay.setMessage("Project created successfully!", "success");
-                AdminProject.loadList();
-                AdminProject.clearForm();
-            })
-            .catch(function(error) {
-                MessageDisplay.setMessage(error.message || "Failed to create project", "error");
-            });
-    },
-
-    updateProject(id) {
-        if (!this.validateProject()) {
-            return;
-        }
-
-        return m.request({
-            method: "PUT",
-            url: "/api/v1/project/" + id,
-            headers: {
-                'X-CSRF-Token': this.CSRF,
-                'Accept': `application/json`
-            },
-            withCredentials: true,
-            body: AdminProject.project,
-        })
-            .then(function() {
-                MessageDisplay.setMessage("Project updated successfully!", "success");
-                AdminProject.loadList();
-            })
-            .catch(function(error) {
-                MessageDisplay.setMessage(error.message || "Failed to update project", "error");
-            });
-    },
-
-    validateProject() {
-        if (!AdminProject.project.title.trim()) {
-            MessageDisplay.setMessage("Title is required", "error");
-            return false;
-        }
-        if (!AdminProject.project.body.trim()) {
-            MessageDisplay.setMessage("Content is required", "error");
-            return false;
-        }
-        return true;
-    },
-
-    clearForm() {
-        AdminProject.project = {
-            title: '',
-            img: '',
-            body: ''
-        };
-        if (AdminProjectList.easyMDE) {
-            AdminProjectList.easyMDE.value('');
-        }
-    }
-
-};
-
-var AdminProjectList = {
+const AdminProjectList = {
     loading: true,
     oninit: (vnode) => {
         if (vnode.attrs.id) {
@@ -131,7 +17,12 @@ var AdminProjectList = {
     },
     view: function(vnode) {
         if (AdminProjectList.loading) {
-            return m(Loadings);
+            return m("div.loading", [
+                m("div.spinner-border.text-primary", {
+                    role: "status"
+                }),
+                m("span.sr-only", "Loading...")
+            ]);
         }
         return [
             m(MessageDisplay),  // Add MessageDisplay at the top
@@ -287,6 +178,119 @@ var AdminProjectList = {
         ];
     }
 
+
+};
+const AdminProject = {
+    list: [],
+    project: {
+        title: '',
+        img: '',
+        body: '',
+    },
+
+    current: [],
+    loadList: function () {
+        return m.request({
+            method: "GET",
+            url: "/api/v1/project",
+            withCredentials: true,
+        })
+            .then(function (result) {
+                AdminProject.list = result
+            })
+    },
+    delete(id) {
+        return m.request({
+                method: "DELETE",
+                url: "/api/v1/project/" + id,
+                withCredentials: true,
+            }
+        ).then(function () {
+            AdminProject.loadList()
+        })
+    },
+
+    load: function (id) {
+        return m.request({
+                method: "GET",
+                url: "/api/v1/project/" + id,
+                withCredentials: true,
+            }
+        ).then(function (result) {
+            AdminProject.project = result
+        })
+    },
+    addProject() {
+        if (!this.validateProject()) {
+            return;
+        }
+
+        return m.request({
+            method: "POST",
+            url: "/api/v1/project",
+            headers: {
+                'X-CSRF-Token': this.CSRF,
+                'Accept': `application/json`
+            },
+            withCredentials: true,
+            body: AdminProject.project,
+        })
+            .then(function () {
+                MessageDisplay.setMessage("Project created successfully!", "success");
+                AdminProject.loadList();
+                AdminProject.clearForm();
+            })
+            .catch(function (error) {
+                MessageDisplay.setMessage(error.message || "Failed to create project", "error");
+            });
+    },
+
+    updateProject(id) {
+        if (!this.validateProject()) {
+            return;
+        }
+
+        return m.request({
+            method: "PUT",
+            url: "/api/v1/project/" + id,
+            headers: {
+                'X-CSRF-Token': this.CSRF,
+                'Accept': `application/json`
+            },
+            withCredentials: true,
+            body: AdminProject.project,
+        })
+            .then(function () {
+                MessageDisplay.setMessage("Project updated successfully!", "success");
+                AdminProject.loadList();
+            })
+            .catch(function (error) {
+                MessageDisplay.setMessage(error.message || "Failed to update project", "error");
+            });
+    },
+
+    validateProject() {
+        if (!AdminProject.project.title.trim()) {
+            MessageDisplay.setMessage("Title is required", "error");
+            return false;
+        }
+        if (!AdminProject.project.body.trim()) {
+            MessageDisplay.setMessage("Content is required", "error");
+            return false;
+        }
+        return true;
+    },
+
+    clearForm() {
+        AdminProject.project = {
+            title: '',
+            img: '',
+            body: ''
+        };
+        if (AdminProjectList.easyMDE) {
+            AdminProjectList.easyMDE.value('');
+        }
+    }
 
 };
 

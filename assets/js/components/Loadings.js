@@ -1,25 +1,14 @@
 // Loading component
 const Loadings = {
-    view:  function (){
-        return m("div.loading-spinner", {
-            style: {
-                textAlign: 'center',
-                padding: '3rem',
-                color: '#fff'
-            }
-        }, [
-            m("i.octicon.octicon-sync", {
-                style: {
-                    fontSize: '2rem',
-                    animation: 'spin 1s linear infinite'
-                }
+    view: function() {
+        return m("div.loading", [
+            m("div.spinner-border.text-primary", {
+                role: "status"
             }),
-            m("p", "Loading projects...")
+            m("span.sr-only", "Loading...")
         ]);
-
     }
 };
-
 
 
 export default Loadings;
