@@ -1,4 +1,3 @@
-
 import {adminLayout} from "./Admin/adminLayout";
 import {AdminProjectList} from "./Admin/AdminProject";
 import {AdminPostList} from "./Admin/AdminPosts";
@@ -9,7 +8,7 @@ import {AdminUserList} from "./Admin/AdminUsers";
 import {Auth, LoginList} from "./Login/LoginModule";
 import {AdminSettings} from "./Admin/AdminSettings";
 import {SEOTools} from "./Admin/SEOTools";
-import {AdminDashboard} from "./Admin/AdminDashboard";
+import AdminDashboard from "./Admin/AdminDashboard";
 
 require('./ImaLab.js');
 let root = document.getElementById('main');
@@ -50,5 +49,4 @@ m.request({
       }
 
 
-  })
-console.log(Auth)
+  });

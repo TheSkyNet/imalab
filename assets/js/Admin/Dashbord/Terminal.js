@@ -5,7 +5,7 @@ const Terminal = {
             currentCommand: "",
             prompt: vnode.attrs.prompt || ">",
             commands: {
-                ...defaultCommands,
+                ...this.defaultCommands,
                 ...(vnode.attrs.commands || {})
             }
         };
@@ -165,36 +165,36 @@ const Terminal = {
     }
 };
 
-// Usage example in AdminDashboard:
-const AdminDashboard = {
-    // ... other dashboard code ...
-
-    terminalCommands: {
-        status: () => "All systems operational ✓",
-        experiments: () => "Currently running 23 experiments",
-        uptime: () => "System uptime: 47 days, 13 hours",
-        sensors: () => "Temperature: 22°C\nHumidity: 45%\nPressure: 1013 hPa",
-    },
-
-    view: () => {
-        return m("div.dashboard", {
-            style: {
-                padding: "2rem",
-                background: "#f0f4f8",
-                minHeight: "100vh"
-            }
-        }, [
-
-
-            // Terminal usage
-            m(Terminal, {
-                title: "Laboratory Control Terminal",
-                prompt: "lab>",
-                commands: AdminDashboard.terminalCommands,
-                maxHeight: "400px"
-            })
-        ]);
-    }
-};
+// // Usage example in AdminDashboard:
+// const AdminDashboardTest = {
+//     // ... other dashboard code ...
+//
+//     terminalCommands: {
+//         status: () => "All systems operational ✓",
+//         experiments: () => "Currently running 23 experiments",
+//         uptime: () => "System uptime: 47 days, 13 hours",
+//         sensors: () => "Temperature: 22°C\nHumidity: 45%\nPressure: 1013 hPa",
+//     },
+//
+//     view: () => {
+//         return m("div.dashboard", {
+//             style: {
+//                 padding: "2rem",
+//                 background: "#f0f4f8",
+//                 minHeight: "100vh"
+//             }
+//         }, [
+//
+//
+//             // Terminal usage
+//             m(Terminal, {
+//                 title: "Laboratory Control Terminal",
+//                 prompt: "lab>",
+//                 commands: {},
+//                 maxHeight: "400px"
+//             })
+//         ]);
+//     }
+// };
 
 module.exports = { Terminal };
