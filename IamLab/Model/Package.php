@@ -2,6 +2,7 @@
 
 namespace IamLab\Model;
 
+use DateTime;
 use IamLab\Core\API\Entity;
 use IamLab\Core\Enum\PackageType;
 
@@ -229,5 +230,12 @@ class Package extends Entity
 
     }
 
+    public function getUpdatedAt(){
+        $dt = $this->updated_at ?? date('Y-m-d H:i:s');
+        if ( $dt instanceof DateTime) {
+            return $dt;
+        }
+        return DateTime::createFromFormat('Y-m-d H:i:s', $dt);
 
+    }
 }

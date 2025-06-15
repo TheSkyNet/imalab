@@ -1,6 +1,7 @@
 <?php
 
 namespace IamLab\Model;
+use DateTime;
 use Phalcon\Mvc\Model;
 class Project extends Model
 {
@@ -158,6 +159,15 @@ class Project extends Model
   {
 
     $this->setSource('project');
+  }
+
+  public function getUpdatedAt(){
+      $dt = $this->updated_at ?? date('Y-m-d H:i:s');
+      if ( $dt instanceof DateTime) {
+          return $dt;
+      }
+      return DateTime::createFromFormat('Y-m-d H:i:s', $dt);
+
   }
 
 

@@ -10,6 +10,7 @@ use IamLab\Model\Post;
 use IamLab\Model\Project;
 use IamLab\Model\User;
 use IamLab\Service\SEO\LLMsService;
+use IamLab\Service\SEO\SitemapService;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
 use SodiumException;
@@ -346,8 +347,17 @@ class API extends aAPI
                     $service = new LLMsService($this->fs);
                     $result = $service->generate();
                     if (!$result) {
-                        throw new \RuntimeException("Failed to write llms.txt file");
+                        throw new \RuntimeException("Failed to write llms files");
                     }
+                    break;
+                case 'sitemap':
+                    $service = new SitemapService($this->fs);
+                    $result = $service->generate();
+                    if (!$result) {
+                        throw new \RuntimeException("Failed to generate sitemap.xml");
+                    }
+                    // Ping search engines about the update
+                   // $this->pingSearchEnginesAction();
                     break;
                 default:
                     throw new \InvalidArgumentException("Unsupported file type: $type");
@@ -365,4 +375,17 @@ class API extends aAPI
             ], 400);
         }
     }
+
+    private function pingSearchEnginesAction(): void
+    {
+        $urls = [
+            "https://www.google.com/webmasters/tools/ping?sitemap=" . urlencode($this->baseUrl . "/sitemap.xml"),
+            "https://www.bing.com/ping?sitemap=" . urlencode($this->baseUrl . "/sitemap.xml")
+        ];
+
+        foreach ($urls as $url) {
+            file_get_contents($url);
+        }
+    }
+
 }
