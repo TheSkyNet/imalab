@@ -120,4 +120,4 @@ const AdminDashboard = {
     }
 };
 
-module.exports = { AdminDashboard };
+export default AdminDashboard;

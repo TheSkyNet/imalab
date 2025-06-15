@@ -1,3 +1,4 @@
+// Terminal.js
 const Terminal = {
     oninit: (vnode) => {
         Terminal.state = {
@@ -5,10 +6,18 @@ const Terminal = {
             currentCommand: "",
             prompt: vnode.attrs.prompt || ">",
             commands: {
-                ...this.defaultCommands,
+                ...Terminal.defaultCommands,
                 ...(vnode.attrs.commands || {})
             }
         };
+        // Add MOTD on init
+        Terminal.state.history.push({
+            response: `Welcome to Laboratory Control Terminal
+System Version: 2025.2
+Type 'help' for available commands
+`,
+            timestamp: new Date().toISOString()
+        });
     },
 
     state: {
@@ -51,10 +60,18 @@ const Terminal = {
             timestamp: new Date().toISOString()
         });
         this.state.currentCommand = "";
+
+        // Auto scroll to bottom after command execution
+        setTimeout(() => {
+            const content = document.querySelector('.terminal-content');
+            if (content) {
+                content.scrollTop = content.scrollHeight;
+            }
+        }, 0);
     },
 
     view: (vnode) => {
-        const { backgroundColor = "#2d3748", textColor = "#a0aec0", maxHeight = "400px" } = vnode.attrs;
+        const { backgroundColor = "#8198c4", textColor = "#e2e8f0", maxHeight = "400px" } = vnode.attrs;
 
         return m("div.terminal", {
             style: {
@@ -69,29 +86,6 @@ const Terminal = {
                 flexDirection: "column"
             }
         }, [
-            // Terminal Header with dots
-            m("div.terminal-header", {
-                style: {
-                    marginBottom: "1rem",
-                    display: "flex",
-                    gap: "0.5rem",
-                    alignItems: "center"
-                }
-            }, [
-                // Window-style dots
-                m("span.dot", { style: { color: "#fc8181" } }, "●"),
-                m("span.dot", { style: { color: "#f6ad55" } }, "●"),
-                m("span.dot", { style: { color: "#68d391" } }, "●"),
-                // Optional title
-                vnode.attrs.title && m("span.terminal-title", {
-                    style: {
-                        marginLeft: "1rem",
-                        color: "#e2e8f0",
-                        fontSize: "0.9em"
-                    }
-                }, vnode.attrs.title)
-            ]),
-
             // Terminal content area
             m("div.terminal-content", {
                 style: {
@@ -101,7 +95,7 @@ const Terminal = {
             }, [
                 // Command History
                 ...Terminal.state.history.map(entry => [
-                    m("div.command-line", {
+                    entry.cmd && m("div.command-line", {
                         style: {
                             display: "flex",
                             gap: "0.5rem",
@@ -115,9 +109,9 @@ const Terminal = {
                     entry.response && m("div.response", {
                         style: {
                             marginBottom: "0.75rem",
-                            paddingLeft: "calc(1rem + " + Terminal.state.prompt.length + "ch)",
+                            paddingLeft: entry.cmd ? `calc(1rem + ${Terminal.state.prompt.length}ch)` : "0",
                             whiteSpace: "pre-wrap",
-                            color: "#e2e8f0"
+                            color: textColor
                         }
                     }, entry.response)
                 ]),
@@ -138,7 +132,7 @@ const Terminal = {
                         style: {
                             background: "transparent",
                             border: "none",
-                            color: "#e2e8f0",
+                            color: textColor,
                             fontFamily: "monospace",
                             flex: 1,
                             outline: "none",
@@ -165,36 +159,4 @@ const Terminal = {
     }
 };
 
-// // Usage example in AdminDashboard:
-// const AdminDashboardTest = {
-//     // ... other dashboard code ...
-//
-//     terminalCommands: {
-//         status: () => "All systems operational ✓",
-//         experiments: () => "Currently running 23 experiments",
-//         uptime: () => "System uptime: 47 days, 13 hours",
-//         sensors: () => "Temperature: 22°C\nHumidity: 45%\nPressure: 1013 hPa",
-//     },
-//
-//     view: () => {
-//         return m("div.dashboard", {
-//             style: {
-//                 padding: "2rem",
-//                 background: "#f0f4f8",
-//                 minHeight: "100vh"
-//             }
-//         }, [
-//
-//
-//             // Terminal usage
-//             m(Terminal, {
-//                 title: "Laboratory Control Terminal",
-//                 prompt: "lab>",
-//                 commands: {},
-//                 maxHeight: "400px"
-//             })
-//         ]);
-//     }
-// };
-
-module.exports = { Terminal };
+export { Terminal };
